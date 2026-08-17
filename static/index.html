@@ -630,18 +630,41 @@ function renderResult(r){
   $('#result').innerHTML = '';
   $('#result').appendChild(box);
 
-  /* animation */
+  /* The answer must be correct before it is pretty. Write the final value
+     first, then animate over it — requestAnimationFrame does not run in a
+     background tab, and a count-up that never starts would otherwise leave
+     the headline number frozen at 0.0 while the API returned something else. */
   const target = r.risk_probability * 100;
   const big = $('#big'), meter = $('#meter');
-  requestAnimationFrame(() => { meter.style.width = Math.min(100,target) + '%'; });
-  const t0 = performance.now(), dur = 500;
-  (function step(now){
-    const p = Math.min(1, (now - t0) / dur);
-    big.textContent = (target * (1 - Math.pow(1-p,3))).toFixed(1);
-    if (p < 1) requestAnimationFrame(step); else big.textContent = target.toFixed(1);
-  })(t0);
+  big.textContent = target.toFixed(1);
+  meter.style.width = Math.min(100, target) + '%';
+
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!still){
+    const t0 = performance.now(), dur = 500;
+    requestAnimationFrame(function step(now){
+      const p = Math.min(1, (now - t0) / dur);
+      big.textContent = (target * (1 - Math.pow(1 - p, 3))).toFixed(1);
+      if (p < 1) requestAnimationFrame(step); else big.textContent = target.toFixed(1);
+    });
+  }
   dr.querySelectorAll('.drv-track > i').forEach((n,i) =>
-    setTimeout(() => { n.style.width = n.dataset.w + '%'; }, 50*i));
+    setTimeout(() => { n.style.width = n.dataset.w + '%'; }, still ? 0 : 50*i));
+
+  /* Bring the answer into view. The form is tall and sticky, so on a laptop
+     the Calculate button sits well below the result column — click it and the
+     result renders several hundred pixels ABOVE the viewport, which reads as
+     "nothing happened". */
+  const resultBox = $('#result').getBoundingClientRect();
+  const hidden = resultBox.top < 60 || resultBox.top > innerHeight - 140;
+  if (hidden){
+    const y = Math.max(0, scrollY + resultBox.top - 76);  // clear the 60px topbar
+    /* Instant, not smooth. Smooth scrolling is driven by the compositor and
+       silently does nothing in some contexts — and a scroll that does not
+       happen puts the answer back off-screen, which is the bug this exists
+       to fix. Correctness before polish. */
+    window.scrollTo(0, y);
+  }
 }
 
 /* ----------------------------------------------------------- batch */
