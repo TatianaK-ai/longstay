@@ -1,0 +1,26 @@
+# Source CSVs from Socrata — large and re-downloadable with
+# `python main.py fetch`. Roughly 48 MB combined; there is no reason to
+# carry them in git.
+data/raw/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Editors / OS / local tooling
+.idea/
+.vscode/
+.claude/
+.DS_Store
+Thumbs.db
+
+# NOT ignored, and deliberately so — the deployed service loads these at
+# boot and must never download or retrain:
+#   data/processed/joined.parquet
+#   evals/results/*.joblib
+#   evals/results/*.json
+#   evals/results/figures/*.png

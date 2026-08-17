@@ -1,0 +1,318 @@
+[
+  {
+    "id": "load",
+    "label": "FINDING 01",
+    "headline": "Four percent of animals consume a third of the shelter",
+    "chart": "shelter_load.png",
+    "stats": [
+      {
+        "label": "leave within 7 days",
+        "value": "54.4% of animals"
+      },
+      {
+        "label": "their share of animal-days",
+        "value": "7.5%"
+      },
+      {
+        "label": "stay 90+ days",
+        "value": "4.2% of animals"
+      },
+      {
+        "label": "their share of animal-days",
+        "value": "33.1%"
+      },
+      {
+        "label": "mean stay in that group",
+        "value": "152 days"
+      },
+      {
+        "label": "total animal-days",
+        "value": "3,314,800"
+      },
+      {
+        "label": "Pit Bull \u2014 share of long stays vs population",
+        "value": "20.2% vs 8.3% (2.5x)"
+      },
+      {
+        "label": "Injured \u2014 share of long stays vs population",
+        "value": "9.1% vs 6.2% (1.5x)"
+      },
+      {
+        "label": "3-7y \u2014 share of long stays vs population",
+        "value": "20.3% vs 13.8% (1.5x)"
+      },
+      {
+        "label": "Abandoned \u2014 share of long stays vs population",
+        "value": "1.6% vs 1.1% (1.5x)"
+      },
+      {
+        "label": "7y+ \u2014 share of long stays vs population",
+        "value": "11.7% vs 8.0% (1.5x)"
+      }
+    ],
+    "callout": "4% of animals stay longer than three months, and those animals take up 33% of all the time the shelter has to give.",
+    "caveat": "That one sentence is the argument for this entire tool. A small group absorbs a third of everything the shelter has, so identifying them on day one is worth more than marginally improving the experience of the 54% who leave within a week.\n\nIt is measured in animal-days rather than head count, because duration is the resource being consumed. A kennel occupied for 152 days is 152 days of capacity, however you count the animal in it. Both figures cover the whole cleaned dataset, not just the test period.\n\nWhat these animals have in common, drawing on the breakdowns in findings 05 and 07: they skew adult rather than young \u2014 the 3-7 year and 7-year-plus bands are both about 1.5 times over-represented, and finding 05 shows the long-stay rate climbing more than fivefold from puppies to adult dogs even while the median stay stays flat. They skew toward Pit Bulls, who are 2.5 times over-represented and are the single largest signal in the group. They skew injured rather than sick \u2014 finding 07 shows Injured carrying the highest long-stay rate of any common condition despite having one of the shortest median stays, which is the bimodal pattern that makes this group hard to spot early. And they skew toward owner surrenders over strays.\n\nThe over-representation figures compare each group's share of long stays with its share of the whole population. They describe who is in the group; they do not establish cause, and these categories overlap heavily \u2014 an adult surrendered Pit Bull is one animal counted in four of them.",
+    "sample": "171,561 animals over 11.6 years, whole dataset"
+  },
+  {
+    "id": "black",
+    "label": "FINDING 02",
+    "headline": "Black cats wait longer, black dogs do not, and the overall average hides both",
+    "chart": "black_effect.png",
+    "stats": [
+      {
+        "label": "median stay, black (all species)",
+        "value": "6.1 days"
+      },
+      {
+        "label": "median stay, all others",
+        "value": "6.0 days"
+      },
+      {
+        "label": "CATS \u2014 median stay, black vs others",
+        "value": "8.1 vs 7.1 days"
+      },
+      {
+        "label": "CATS \u2014 90+ day rate, black vs others",
+        "value": "5.10% vs 4.21%"
+      },
+      {
+        "label": "DOGS \u2014 median stay, black vs others",
+        "value": "6.0 vs 6.0 days"
+      },
+      {
+        "label": "DOGS \u2014 90+ day rate, black vs others",
+        "value": "4.10% vs 4.49%"
+      },
+      {
+        "label": "raw difference in 90+ rate",
+        "value": "+0.16 pp"
+      },
+      {
+        "label": "controlled difference (age, sex, species, intake type, condition)",
+        "value": "+0.36 pp [+0.13, +0.60]"
+      },
+      {
+        "label": "strata used / animals retained",
+        "value": "225 strata, 96.7% of animals"
+      },
+      {
+        "label": "importance of is_black to the model",
+        "value": "0.000 days"
+      },
+      {
+        "label": "share of animals that are black",
+        "value": "24.2%"
+      }
+    ],
+    "caveat": "An earlier pass compared medians across all animals, saw 6.1 against 6.0 days, and concluded there was nothing here. That was wrong, and the way it was wrong is the interesting part.\n\nThe overall figure is near zero because the two species point in opposite directions and cancel. Black cats wait about a day longer at the median and are 1.21 times as likely to still be there after three months. Black dogs are, if anything, very slightly quicker. Averaging the two produced a null that described neither.\n\nHolding species, age, sex, intake type and intake condition fixed by direct standardisation, being black is associated with +0.36 percentage points on the 90+ day rate, 95% CI [+0.13, +0.60] across 225 strata covering 97% of animals. The interval excludes zero, so the effect is real, but read the size before the significance: on a 4.2% base rate this is a small effect that a sample of 171,561 makes detectable. It is nothing like the folklore version of \"black dog syndrome\", and note that the dogs are the half where the effect is absent.\n\nThe model, meanwhile, finds no use for the feature at all \u2014 0.000 days of permutation importance. An effect can be real and still be too small to help a prediction.\n\nBlack means the primary colour component is literally \"Black\"; \"Black Tabby\" is a pattern, not a solid colour. One shelter, one city, one recording practice \u2014 this says nothing about adopter behaviour anywhere else.",
+    "sample": "68,443 cats and 93,347 dogs; controlled estimate uses 225 strata covering 97% of animals"
+  },
+  {
+    "id": "name_leak",
+    "label": "FINDING 03",
+    "headline": "The strongest predictor we found was measuring our own staff, so we deleted it",
+    "notice": "has_name was the second most important feature in the model. It was removed after the timing audit showed it was not knowable at intake, at a cost of 7.4% PR-AUC and 44 of the 713 long stays the model previously caught.",
+    "chart": "permutation_importance.png",
+    "stats": [
+      {
+        "label": "stray intakes carrying a name",
+        "value": "67.6%"
+      },
+      {
+        "label": "wildlife intakes carrying a name (control)",
+        "value": "3.0%"
+      },
+      {
+        "label": "90+ day rate, named strays",
+        "value": "5.38%"
+      },
+      {
+        "label": "90+ day rate, unnamed strays",
+        "value": "0.89%"
+      },
+      {
+        "label": "gap between them",
+        "value": "6.0x"
+      },
+      {
+        "label": "named among animals staying 90+ days",
+        "value": "94.5%"
+      },
+      {
+        "label": "named among everyone else",
+        "value": "70.3%"
+      },
+      {
+        "label": "named across the whole dataset",
+        "value": "71.3%"
+      },
+      {
+        "label": "intake and outcome name identical",
+        "value": "122,908 of 122,908"
+      },
+      {
+        "label": "cost of removing it (PR-AUC)",
+        "value": "-7.4%"
+      }
+    ],
+    "caveat": "A name looked like the second most useful thing we knew about an animal. It was not knowable at intake: two thirds of animals picked up off the street already carry one in the record, while wildlife \u2014 which nobody names \u2014 sits near zero.\n\nSet the modelling aside and this is a result about the shelter rather than about the data. Naming is a thing staff do, and it concentrates hard: 94.5% of animals who stayed 90+ days have a name against 70.3% of everyone else. Among strays alone \u2014 animals who all arrived the same way, off the street \u2014 the named ones are 6.0 times more likely to still be there after three months (5.38% against 0.89%). Whatever else a name is, it marks an animal the staff have engaged with.\n\nWhat this cannot show is which way it runs. Naming may draw attention that somehow extends a stay, or \u2014 far more likely \u2014 staff name the animals who are still there after a few weeks, so the name follows the long stay rather than preceding it. The data carries no timestamp on the name field, so the two are indistinguishable here. Nothing in this finding says naming an animal harms it, and it should not be read that way.\n\nFor the model the direction does not matter: either way the name is not knowable on day one. Removing it cost 7.4% of PR-AUC and 44 of the long stays we used to catch. We removed it anyway. See config.TEMPORAL_LEAKAGE_NOTES.",
+    "sample": "117,743 stray intakes; 122,908 stays with a name on both sides"
+  },
+  {
+    "id": "duration",
+    "label": "FINDING 04",
+    "headline": "Length of stay in days cannot be predicted here",
+    "chart": "calibration.png",
+    "stats": [
+      {
+        "label": "R\u00b2 of the best variant",
+        "value": "-0.116"
+      },
+      {
+        "label": "MAE",
+        "value": "18.7 days"
+      },
+      {
+        "label": "MAE of a constant (the median)",
+        "value": "20.2 days"
+      },
+      {
+        "label": "classifier PR-AUC",
+        "value": "0.1174"
+      },
+      {
+        "label": "better than chance",
+        "value": "2.40x"
+      }
+    ],
+    "caveat": "A negative R\u00b2 means the day estimate performs worse than a constant. That is the result, not a defect: length of stay is largely not explained by what is knowable at intake. It is why the headline figure is a probability rather than a number of days.",
+    "sample": "14,591 animals in the held-out test period"
+  },
+  {
+    "id": "age",
+    "label": "FINDING 05",
+    "headline": "Age moves the long-stay tail without moving the median, and kittens break the pattern entirely",
+    "chart": "stay_by_age.png",
+    "stats": [
+      {
+        "label": "CATS \u2014 median stay, under 2 months",
+        "value": "11.9 days"
+      },
+      {
+        "label": "CATS \u2014 median stay, 2-6 months",
+        "value": "6.9 days"
+      },
+      {
+        "label": "CATS \u2014 median stay, 7 years and over",
+        "value": "8.1 days"
+      },
+      {
+        "label": "CATS \u2014 90+ rate, 2-6 months vs 7 years and over",
+        "value": "2.15% vs 7.11%"
+      },
+      {
+        "label": "DOGS \u2014 median stay, youngest vs oldest band",
+        "value": "5.0 vs 4.0 days"
+      },
+      {
+        "label": "DOGS \u2014 90+ rate, 2-6 months",
+        "value": "1.19%"
+      },
+      {
+        "label": "DOGS \u2014 90+ rate, 3-7 years",
+        "value": "6.42%"
+      },
+      {
+        "label": "DOGS \u2014 ratio across those bands",
+        "value": "5.4x"
+      },
+      {
+        "label": "cats / dogs in sample",
+        "value": "68,443 / 93,347"
+      }
+    ],
+    "caveat": "Published analyses of this dataset report length of stay rising with age for cats and staying relatively flat for dogs. Tested here, that holds only in part, and the half that fails is the more useful half.\n\nFor dogs the median really is flat \u2014 every age band sits between four and seven days. But the 90+ day rate climbs from 1.19% for puppies to 6.42% for adults, a 5.4-fold difference. \"Flat\" is true of the typical dog and false of the tail, and the tail is what costs kennel space.\n\nFor cats the relationship is not a rise at all, it is U-shaped. Kittens under two months have the LONGEST median stay of any cat band at 11.9 days \u2014 longer than senior cats \u2014 then the two-to-six-month band drops to 6.9 days before climbing again with age. A monotonic summary misses this completely.\n\nThe kitten result most likely reflects policy rather than demand: very young kittens are typically held to reach an adoptable weight, so part of that stay is a rule, not a failure to place them. This data cannot separate the two, and the distinction matters \u2014 a kitten waiting for weight does not need a foster placement for the same reason an adult dog waiting for an adopter does.",
+    "sample": "68,443 cats and 93,347 dogs, levels below 100 animals omitted"
+  },
+  {
+    "id": "month",
+    "label": "FINDING 06",
+    "headline": "Cats have a season and dogs do not",
+    "chart": "stay_by_month.png",
+    "stats": [
+      {
+        "label": "CATS \u2014 median stay, January intake",
+        "value": "5.3 days"
+      },
+      {
+        "label": "CATS \u2014 median stay, May intake",
+        "value": "11.1 days"
+      },
+      {
+        "label": "CATS \u2014 median stay, June intake",
+        "value": "9.7 days"
+      },
+      {
+        "label": "CATS \u2014 June against January",
+        "value": "+4.5 days (1.8x)"
+      },
+      {
+        "label": "CATS \u2014 intake volume, May vs January",
+        "value": "8,834 vs 3,520 animals"
+      },
+      {
+        "label": "DOGS \u2014 median stay range across all 12 months",
+        "value": "5.4\u20136.2 days"
+      },
+      {
+        "label": "CATS \u2014 median stay range across all 12 months",
+        "value": "5.0\u201311.1 days"
+      }
+    ],
+    "caveat": "Kitten season is visible and large. A cat admitted in June waits 1.8 times as long as one admitted in January \u2014 9.7 days against 5.3. The peak is May at 11.1 days, when intake volume is also at its highest: 8,834 cats against 3,520 in January. More animals arriving and each one waiting longer is a compounding problem, not an additive one.\n\nDogs show nothing. Every month sits within a 0.7-day band across the whole year. Whatever drives dog adoption, it is not the calendar.\n\nMonth of intake is a proxy, not a cause. It carries kitten season, school holidays, weather and local events together, and this data cannot separate them. The practical reading is capacity planning rather than explanation: the shelter knows in advance which months will be hard for cats.",
+    "sample": "68,443 cats and 93,347 dogs across 12 months"
+  },
+  {
+    "id": "condition",
+    "label": "FINDING 07",
+    "headline": "Injured animals leave fastest and get stuck most often \u2014 the median and the tail disagree",
+    "chart": "stay_by_condition.png",
+    "stats": [
+      {
+        "label": "Injured \u2014 median stay / 90+ rate",
+        "value": "4.4 days / 6.19%"
+      },
+      {
+        "label": "Normal \u2014 median stay / 90+ rate",
+        "value": "6.2 days / 4.07%"
+      },
+      {
+        "label": "Sick \u2014 median stay / 90+ rate",
+        "value": "1.9 days / 3.15%"
+      },
+      {
+        "label": "Nursing \u2014 median stay / 90+ rate",
+        "value": "3.0 days / 4.79%"
+      },
+      {
+        "label": "Neonatal \u2014 median stay / 90+ rate",
+        "value": "0.8 days / 4.21%"
+      },
+      {
+        "label": "Aged \u2014 median stay / 90+ rate",
+        "value": "2.1 days / 4.82%"
+      },
+      {
+        "label": "Injured animals per year",
+        "value": "913"
+      },
+      {
+        "label": "share of all intakes recorded Normal",
+        "value": "84.8%"
+      }
+    ],
+    "caveat": "This is the breakdown with the most direct operational reading, and it is not the one you would guess. Injured animals have among the SHORTEST median stays (4.4 days, against 6.2 for Normal) and the HIGHEST rate of getting stuck past three months (6.19% against 4.07%). The distribution is bimodal: most injuries resolve and the animal moves on quickly, while a minority turn into long medical holds. A single average of this group describes almost nobody in it.\n\nSick animals show the opposite shape \u2014 the shortest median of the common conditions at 1.9 days and a BELOW-average 90+ rate. Reading that as good news would be a mistake: this data records how long an animal was present, not what happened to them, and outcome type is deliberately excluded from this project. A stay can end quickly for reasons nobody wants.\n\nThe timing audit could not determine what \"Normal\" means. The field may be assessed at the door or updated after a veterinary examination hours later, and the feed carries no edit history to settle it. If conditions are upgraded after examination, some animals counted here as Normal were recorded that way before anyone looked properly. See config.TEMPORAL_LEAKAGE_NOTES.\n\nCategories below 100 animals are omitted; Pregnant, Other and Feral are small enough that their rates move on a handful of cases.",
+    "sample": "171,561 animals; 10 conditions below 100 animals omitted"
+  }
+]

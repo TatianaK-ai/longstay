@@ -1,0 +1,3740 @@
+{
+  "target": "length_of_stay_days",
+  "target_transform": "fitted on log1p(days), inverted with expm1; all reported numbers are in days",
+  "split": {
+    "kind": "temporal, never shuffled",
+    "train": {
+      "rows": 145832,
+      "intake_from": "2013-10-01 07:51:00",
+      "intake_to": "2022-12-31 20:32:00"
+    },
+    "validation": {
+      "rows": 11138,
+      "intake_from": "2023-01-01 07:45:00",
+      "intake_to": "2023-12-31 13:51:00"
+    },
+    "test": {
+      "rows": 14591,
+      "intake_from": "2024-01-01 08:20:00",
+      "intake_to": "2025-05-04 13:15:00"
+    }
+  },
+  "hyperparameters": {
+    "note": "fixed in config.GBM_PARAMS; no search was run, the first configuration tried is the one reported",
+    "max_iter": 300,
+    "learning_rate": 0.06,
+    "max_leaf_nodes": 31,
+    "min_samples_leaf": 40,
+    "l2_regularization": 1.0,
+    "early_stopping": false
+  },
+  "models": {
+    "baseline_global_median": {
+      "test": {
+        "n": 14591,
+        "mae_days": 20.16145356917125,
+        "median_absolute_error_days": 5.142569444444445,
+        "rmse_days": 40.314608416864004,
+        "r2": -0.2449408702195326,
+        "mean_bias_days": -17.88210792516696,
+        "mean_actual_days": 23.172385702944737,
+        "mean_predicted_days": 5.290277777777776,
+        "within_7_days_rate": 0.593173874306079,
+        "within_14_days_rate": 0.6769926667123569
+      },
+      "validation": {
+        "n": 11138,
+        "mae_days": 24.777079461453283,
+        "median_absolute_error_days": 5.870138888888889,
+        "rmse_days": 47.64482581810848,
+        "r2": -0.2917629462094802,
+        "mean_bias_days": -22.64328329193352,
+        "mean_actual_days": 27.9335610697113,
+        "mean_predicted_days": 5.290277777777777,
+        "within_7_days_rate": 0.5182258933381217,
+        "within_14_days_rate": 0.6075597055126594
+      },
+      "test_by_animal_type": [
+        {
+          "group": "Cat",
+          "n": 7322,
+          "mae_days": 18.91567531924338,
+          "median_absolute_error_days": 5.165277777777778,
+          "mean_actual_days": 21.89030441774915,
+          "mean_predicted_days": 5.290277777777775
+        },
+        {
+          "group": "Dog",
+          "n": 6493,
+          "mae_days": 22.9682586428547,
+          "median_absolute_error_days": 5.172916666666667,
+          "mean_actual_days": 26.347234737480814,
+          "mean_predicted_days": 5.290277777777776
+        },
+        {
+          "group": "Other",
+          "n": 675,
+          "mae_days": 7.897129663923183,
+          "median_absolute_error_days": 4.250914351851852,
+          "mean_actual_days": 7.916534945130315,
+          "mean_predicted_days": 5.290277777777776
+        },
+        {
+          "group": "Bird",
+          "n": 94,
+          "mae_days": 11.330776940504334,
+          "median_absolute_error_days": 3.998263888888889,
+          "mean_actual_days": 13.05901324862096,
+          "mean_predicted_days": 5.290277777777776
+        },
+        {
+          "group": "Livestock",
+          "n": 7,
+          "mae_days": 20.947916666666668,
+          "median_absolute_error_days": 25.863888888888887,
+          "mean_actual_days": 26.238194444444446,
+          "mean_predicted_days": 5.290277777777779
+        }
+      ],
+      "test_by_predicted_decile": [
+        {
+          "decile": 1,
+          "n": 1460,
+          "mean_predicted_days": 5.290277777777777,
+          "mean_actual_days": 28.97095004915018,
+          "median_actual_days": 7.7131944444444445,
+          "mae_days": 25.884511328323185,
+          "actual_standard_error": 1.3192020792407402
+        },
+        {
+          "decile": 2,
+          "n": 1459,
+          "mean_predicted_days": 5.290277777777776,
+          "mean_actual_days": 22.800673787221076,
+          "median_actual_days": 6.6305555555555555,
+          "mae_days": 19.966768715253977,
+          "actual_standard_error": 1.0894813761883473
+        },
+        {
+          "decile": 3,
+          "n": 1459,
+          "mean_predicted_days": 5.290277777777776,
+          "mean_actual_days": 28.490307573680603,
+          "median_actual_days": 7.180555555555555,
+          "mae_days": 25.959745179981212,
+          "actual_standard_error": 1.148464124030806
+        },
+        {
+          "decile": 4,
+          "n": 1459,
+          "mean_predicted_days": 5.290277777777776,
+          "mean_actual_days": 30.806210375257024,
+          "median_actual_days": 14.978472222222223,
+          "mae_days": 27.510064835440303,
+          "actual_standard_error": 1.0692536433723785
+        },
+        {
+          "decile": 5,
+          "n": 1459,
+          "mean_predicted_days": 5.290277777777776,
+          "mean_actual_days": 26.267393294811264,
+          "median_actual_days": 12.16388888888889,
+          "mae_days": 22.946022223174168,
+          "actual_standard_error": 0.931442043892249
+        },
+        {
+          "decile": 6,
+          "n": 1459,
+          "mean_predicted_days": 5.290277777777776,
+          "mean_actual_days": 25.265834729520478,
+          "median_actual_days": 10.056944444444444,
+          "mae_days": 22.15551360647831,
+          "actual_standard_error": 0.9642924583169241
+        },
+        {
+          "decile": 7,
+          "n": 1459,
+          "mean_predicted_days": 5.290277777777776,
+          "mean_actual_days": 23.394004986609293,
+          "median_actual_days": 8.302083333333334,
+          "mae_days": 20.372879786700683,
+          "actual_standard_error": 0.8224019778231503
+        },
+        {
+          "decile": 8,
+          "n": 1459,
+          "mean_predicted_days": 5.290277777777776,
+          "mean_actual_days": 21.478833001738888,
+          "median_actual_days": 11.077083333333333,
+          "mae_days": 17.880921507310944,
+          "actual_standard_error": 0.6711782321862344
+        },
+        {
+          "decile": 9,
+          "n": 1459,
+          "mean_predicted_days": 5.290277777777776,
+          "mean_actual_days": 15.600582233835961,
+          "median_actual_days": 7.222916666666666,
+          "mae_days": 12.242485871538092,
+          "actual_standard_error": 0.5270669217490851
+        },
+        {
+          "decile": 10,
+          "n": 1459,
+          "mean_predicted_days": 5.290277777777776,
+          "mean_actual_days": 8.645092656055645,
+          "median_actual_days": 4.9840277777777775,
+          "mae_days": 6.691700048231919,
+          "actual_standard_error": 0.2871719172190177
+        }
+      ]
+    },
+    "baseline_group_median": {
+      "test": {
+        "n": 14591,
+        "mae_days": 19.923770281401275,
+        "median_absolute_error_days": 6.152083333333334,
+        "rmse_days": 39.65095731303993,
+        "r2": -0.2042902975398655,
+        "mean_bias_days": -16.6025776107862,
+        "mean_actual_days": 23.172385702944737,
+        "mean_predicted_days": 6.569808092158536,
+        "within_7_days_rate": 0.5277225687067371,
+        "within_14_days_rate": 0.6845315605510246
+      },
+      "validation": {
+        "n": 11138,
+        "mae_days": 24.384144801871138,
+        "median_absolute_error_days": 8.942881944444444,
+        "rmse_days": 46.8950502285936,
+        "r2": -0.25142649734784794,
+        "mean_bias_days": -21.289442111548386,
+        "mean_actual_days": 27.9335610697113,
+        "mean_predicted_days": 6.644118958162913,
+        "within_7_days_rate": 0.4569042916142934,
+        "within_14_days_rate": 0.6174358053510505
+      },
+      "test_by_animal_type": [
+        {
+          "group": "Cat",
+          "n": 7322,
+          "mae_days": 18.52135770275021,
+          "median_absolute_error_days": 8.10902777777778,
+          "mean_actual_days": 21.89030441774915,
+          "mean_predicted_days": 8.044405131794592
+        },
+        {
+          "group": "Dog",
+          "n": 6493,
+          "mae_days": 22.87014762871411,
+          "median_absolute_error_days": 5.522222222222222,
+          "mean_actual_days": 26.347234737480814,
+          "mean_predicted_days": 5.484998320841248
+        },
+        {
+          "group": "Other",
+          "n": 675,
+          "mae_days": 7.489272496570646,
+          "median_absolute_error_days": 1.7256944444444442,
+          "mean_actual_days": 7.916534945130315,
+          "mean_predicted_days": 0.5765673868312757
+        },
+        {
+          "group": "Bird",
+          "n": 94,
+          "mae_days": 11.43151571118991,
+          "median_absolute_error_days": 3.627083333333333,
+          "mean_actual_days": 13.05901324862096,
+          "mean_predicted_days": 4.839251748423957
+        },
+        {
+          "group": "Livestock",
+          "n": 7,
+          "mae_days": 66.95158730158731,
+          "median_absolute_error_days": 25.863888888888887,
+          "mean_actual_days": 26.238194444444446,
+          "mean_predicted_days": 71.53839285714285
+        }
+      ],
+      "test_by_predicted_decile": [
+        {
+          "decile": 1,
+          "n": 1460,
+          "mean_predicted_days": 2.3878130311390158,
+          "mean_actual_days": 15.892953513444953,
+          "median_actual_days": 4.045138888888889,
+          "mae_days": 14.432881516362253,
+          "actual_standard_error": 0.9452034380970974
+        },
+        {
+          "decile": 2,
+          "n": 1459,
+          "mean_predicted_days": 4.672987824613512,
+          "mean_actual_days": 18.751663199997463,
+          "median_actual_days": 8.984027777777778,
+          "mae_days": 15.458280111631506,
+          "actual_standard_error": 0.6689771089914407
+        },
+        {
+          "decile": 3,
+          "n": 1459,
+          "mean_predicted_days": 5.109928080496537,
+          "mean_actual_days": 17.970717299075975,
+          "median_actual_days": 7.096527777777778,
+          "mae_days": 14.919479801297182,
+          "actual_standard_error": 0.778720780864097
+        },
+        {
+          "decile": 4,
+          "n": 1459,
+          "mean_predicted_days": 5.268732389003123,
+          "mean_actual_days": 16.559231565570023,
+          "median_actual_days": 7.059027777777778,
+          "mae_days": 13.163747453545048,
+          "actual_standard_error": 0.7040358058706042
+        },
+        {
+          "decile": 5,
+          "n": 1459,
+          "mean_predicted_days": 5.908272646790037,
+          "mean_actual_days": 31.17009069663392,
+          "median_actual_days": 11.885416666666666,
+          "mae_days": 27.33724563215546,
+          "actual_standard_error": 1.2401959913596643
+        },
+        {
+          "decile": 6,
+          "n": 1459,
+          "mean_predicted_days": 6.172310039220165,
+          "mean_actual_days": 17.299466323331554,
+          "median_actual_days": 7.270833333333333,
+          "mae_days": 13.224661789531133,
+          "actual_standard_error": 0.7269647521949054
+        },
+        {
+          "decile": 7,
+          "n": 1459,
+          "mean_predicted_days": 6.369444444444445,
+          "mean_actual_days": 37.05355842884523,
+          "median_actual_days": 13.789583333333333,
+          "mae_days": 32.95781913188891,
+          "actual_standard_error": 1.421805053921796
+        },
+        {
+          "decile": 8,
+          "n": 1459,
+          "mean_predicted_days": 7.678088112101135,
+          "mean_actual_days": 20.9047752931993,
+          "median_actual_days": 8.03888888888889,
+          "mae_days": 17.344172981240323,
+          "actual_standard_error": 0.8732669376960571
+        },
+        {
+          "decile": 9,
+          "n": 1459,
+          "mean_predicted_days": 10.915625000000004,
+          "mean_actual_days": 30.453382223681874,
+          "median_actual_days": 22.148611111111112,
+          "mae_days": 27.170933946069102,
+          "actual_standard_error": 0.85028028503665
+        },
+        {
+          "decile": 10,
+          "n": 1459,
+          "mean_predicted_days": 11.21774569720509,
+          "mean_actual_days": 25.673007815474833,
+          "median_actual_days": 14.214583333333334,
+          "mae_days": 23.23224391072018,
+          "actual_standard_error": 0.7710737885040964
+        }
+      ]
+    },
+    "hist_gradient_boosting": {
+      "test": {
+        "n": 14591,
+        "mae_days": 18.67821636333992,
+        "median_absolute_error_days": 5.907124263276928,
+        "rmse_days": 38.172387637341025,
+        "r2": -0.11614979518493462,
+        "mean_bias_days": -14.258307516021247,
+        "mean_actual_days": 23.172385702944737,
+        "mean_predicted_days": 8.914078186923494,
+        "within_7_days_rate": 0.5414296484134056,
+        "within_14_days_rate": 0.6863134809128915
+      },
+      "validation": {
+        "n": 11138,
+        "mae_days": 22.98294658283329,
+        "median_absolute_error_days": 8.175824148074607,
+        "rmse_days": 45.16494408227661,
+        "r2": -0.16079168741230787,
+        "mean_bias_days": -18.4331524835225,
+        "mean_actual_days": 27.9335610697113,
+        "mean_predicted_days": 9.500408586188803,
+        "within_7_days_rate": 0.4628299515173281,
+        "within_14_days_rate": 0.6143831926737295
+      },
+      "test_by_animal_type": [
+        {
+          "group": "Cat",
+          "n": 7322,
+          "mae_days": 16.8011596227056,
+          "median_absolute_error_days": 6.029465386887458,
+          "mean_actual_days": 21.89030441774915,
+          "mean_predicted_days": 10.271698353047485
+        },
+        {
+          "group": "Dog",
+          "n": 6493,
+          "mae_days": 22.1450832747644,
+          "median_absolute_error_days": 6.695461994149225,
+          "mean_actual_days": 26.347234737480814,
+          "mean_predicted_days": 8.16091189209622
+        },
+        {
+          "group": "Other",
+          "n": 675,
+          "mae_days": 6.7263057323269795,
+          "median_absolute_error_days": 1.453234736577707,
+          "mean_actual_days": 7.916534945130315,
+          "mean_predicted_days": 2.2571517305257065
+        },
+        {
+          "group": "Bird",
+          "n": 94,
+          "mae_days": 10.842546395276791,
+          "median_absolute_error_days": 2.590348436711502,
+          "mean_actual_days": 13.05901324862096,
+          "mean_predicted_days": 3.4912399607523694
+        },
+        {
+          "group": "Livestock",
+          "n": 7,
+          "mae_days": 24.04039521720407,
+          "median_absolute_error_days": 25.986774902035975,
+          "mean_actual_days": 26.238194444444446,
+          "mean_predicted_days": 2.1977992272403775
+        }
+      ],
+      "test_by_predicted_decile": [
+        {
+          "decile": 1,
+          "n": 1460,
+          "mean_predicted_days": 0.8775654222174363,
+          "mean_actual_days": 8.63078840848554,
+          "median_actual_days": 1.0024305555555557,
+          "mae_days": 8.25463824661737,
+          "actual_standard_error": 0.5870358986045645
+        },
+        {
+          "decile": 2,
+          "n": 1459,
+          "mean_predicted_days": 3.1354570834302518,
+          "mean_actual_days": 15.184426658924174,
+          "median_actual_days": 4.638888888888889,
+          "mae_days": 13.388633661044743,
+          "actual_standard_error": 0.7963872861460628
+        },
+        {
+          "decile": 3,
+          "n": 1459,
+          "mean_predicted_days": 4.384779478023012,
+          "mean_actual_days": 14.13105619177265,
+          "median_actual_days": 6.107638888888889,
+          "mae_days": 11.209400899584876,
+          "actual_standard_error": 0.6560226708097551
+        },
+        {
+          "decile": 4,
+          "n": 1459,
+          "mean_predicted_days": 5.3787993381897845,
+          "mean_actual_days": 19.48125075362374,
+          "median_actual_days": 7.99375,
+          "mae_days": 15.803966323917564,
+          "actual_standard_error": 0.841328074278578
+        },
+        {
+          "decile": 5,
+          "n": 1459,
+          "mean_predicted_days": 6.19934065448514,
+          "mean_actual_days": 19.957321867146444,
+          "median_actual_days": 8.047222222222222,
+          "mae_days": 16.032551331009564,
+          "actual_standard_error": 0.8316295161686361
+        },
+        {
+          "decile": 6,
+          "n": 1459,
+          "mean_predicted_days": 7.263641396505425,
+          "mean_actual_days": 23.84092922600462,
+          "median_actual_days": 10.254861111111111,
+          "mae_days": 19.41125716665371,
+          "actual_standard_error": 0.9083899808263064
+        },
+        {
+          "decile": 7,
+          "n": 1459,
+          "mean_predicted_days": 8.381820532344124,
+          "mean_actual_days": 26.11680457981113,
+          "median_actual_days": 11.04861111111111,
+          "mae_days": 21.286124817495278,
+          "actual_standard_error": 0.9446390114116613
+        },
+        {
+          "decile": 8,
+          "n": 1459,
+          "mean_predicted_days": 10.528297059280494,
+          "mean_actual_days": 34.67431563824791,
+          "median_actual_days": 15.265277777777778,
+          "mae_days": 29.394622923659544,
+          "actual_standard_error": 1.3042011666611992
+        },
+        {
+          "decile": 9,
+          "n": 1459,
+          "mean_predicted_days": 15.031717054283371,
+          "mean_actual_days": 35.18623887016729,
+          "median_actual_days": 17.280555555555555,
+          "mae_days": 28.79075446333429,
+          "actual_standard_error": 1.2570331659578509
+        },
+        {
+          "decile": 10,
+          "n": 1459,
+          "mean_predicted_days": 27.96487208403635,
+          "mean_actual_days": 34.53069166000304,
+          "median_actual_days": 31.18402777777778,
+          "mae_days": 23.21735813052553,
+          "actual_standard_error": 0.7752864032096072
+        }
+      ]
+    }
+  },
+  "baseline_2_unseen_cell_rate": 6.853539853334247e-05,
+  "duan_smearing": {
+    "citation": "Duan, N. (1983). Smearing Estimate: A Nonparametric Retransformation Method. JASA 78(383), 605-610.",
+    "status": "NO LONGER APPLIED. Smearing corrects the retransformation bias of a log1p fit. The chosen objective is raw_absolute, which has no transform to invert, so there is nothing to correct. Kept, tested and reported because it is what the log1p variant needs and what motivated dropping log1p.",
+    "factor_S": 2.9953796571170095,
+    "estimated_on": "validation",
+    "residual_std_log_space": 1.253582721034858,
+    "n_residuals": 11138,
+    "comparison": {
+      "before": {
+        "n": 14591,
+        "mae_days": 18.557054964658168,
+        "median_absolute_error_days": 6.272985109499004,
+        "rmse_days": 37.73625080604046,
+        "r2": -0.09079046381289135,
+        "mean_bias_days": -14.147597446250998,
+        "mean_actual_days": 23.172385702944737,
+        "mean_predicted_days": 9.02478825669374,
+        "within_7_days_rate": 0.527928174902337,
+        "within_14_days_rate": 0.692207525186759
+      },
+      "after": {
+        "n": 14591,
+        "mae_days": 24.155076452240007,
+        "median_absolute_error_days": 17.264236137961248,
+        "rmse_days": 36.471644573616935,
+        "r2": -0.018906955386370328,
+        "mean_bias_days": 5.855047334588077,
+        "mean_actual_days": 23.172385702944737,
+        "mean_predicted_days": 29.027433037532813,
+        "within_7_days_rate": 0.21177438146802824,
+        "within_14_days_rate": 0.41114385580152146
+      },
+      "no_inversions": true,
+      "spearman_correlation": 0.9999999987194114,
+      "decile_assignment_identical": true,
+      "clipped_at_ceiling_before": 0,
+      "clipped_at_ceiling_after": 0,
+      "clipped_at_floor_before": 20,
+      "clipped_at_floor_after": 0,
+      "ties_introduced_by_clipping": -20
+    },
+    "calibration_table_log1p": [
+      {
+        "decile": 1,
+        "n": 1460,
+        "mean_predicted_days": 1.2323701420889845,
+        "mean_actual_days": 5.693662512683916,
+        "median_actual_days": 1.2756944444444445,
+        "mae_days": 5.179428009264626,
+        "actual_standard_error": 0.4360483490306202
+      },
+      {
+        "decile": 2,
+        "n": 1459,
+        "mean_predicted_days": 3.218974901158224,
+        "mean_actual_days": 12.600890370751149,
+        "median_actual_days": 4.638888888888889,
+        "mae_days": 10.884813029486047,
+        "actual_standard_error": 0.6368107079407791
+      },
+      {
+        "decile": 3,
+        "n": 1459,
+        "mean_predicted_days": 4.7596033581718284,
+        "mean_actual_days": 17.768061235498692,
+        "median_actual_days": 6.79375,
+        "mae_days": 15.060278440982277,
+        "actual_standard_error": 0.7429452113349381
+      },
+      {
+        "decile": 4,
+        "n": 1459,
+        "mean_predicted_days": 5.946411690191452,
+        "mean_actual_days": 20.420223493069834,
+        "median_actual_days": 7.303472222222222,
+        "mae_days": 17.00907059049812,
+        "actual_standard_error": 0.9320794280943477
+      },
+      {
+        "decile": 5,
+        "n": 1459,
+        "mean_predicted_days": 7.007896487607043,
+        "mean_actual_days": 21.058968503287385,
+        "median_actual_days": 8.217361111111112,
+        "mae_days": 17.121406813100972,
+        "actual_standard_error": 0.8329332802056335
+      },
+      {
+        "decile": 6,
+        "n": 1459,
+        "mean_predicted_days": 8.267297924825856,
+        "mean_actual_days": 22.16127962931231,
+        "median_actual_days": 9.152777777777779,
+        "mae_days": 17.842956433960364,
+        "actual_standard_error": 0.8627992379972755
+      },
+      {
+        "decile": 7,
+        "n": 1459,
+        "mean_predicted_days": 9.873010603082006,
+        "mean_actual_days": 27.22059069028762,
+        "median_actual_days": 12.046527777777778,
+        "mae_days": 22.142634722466735,
+        "actual_standard_error": 0.9526121999033056
+      },
+      {
+        "decile": 8,
+        "n": 1459,
+        "mean_predicted_days": 11.731044277515307,
+        "mean_actual_days": 28.439849195923134,
+        "median_actual_days": 11.035416666666666,
+        "mae_days": 23.738776919532775,
+        "actual_standard_error": 1.0756977848828706
+      },
+      {
+        "decile": 9,
+        "n": 1459,
+        "mean_predicted_days": 15.31660018307778,
+        "mean_actual_days": 35.539577336074935,
+        "median_actual_days": 17.058333333333334,
+        "mae_days": 29.368150569340493,
+        "actual_standard_error": 1.301128068991044
+      },
+      {
+        "decile": 10,
+        "n": 1459,
+        "mean_predicted_days": 22.90001393007196,
+        "mean_actual_days": 40.83273399620491,
+        "median_actual_days": 34.21666666666667,
+        "mae_days": 27.232203156301136,
+        "actual_standard_error": 1.0381897424095745
+      }
+    ],
+    "calibration_table_log1p_smearing": [
+      {
+        "decile": 1,
+        "n": 1460,
+        "mean_predicted_days": 5.680662159572854,
+        "mean_actual_days": 5.693662512683916,
+        "median_actual_days": 1.2756944444444445,
+        "mae_days": 6.651547248359748,
+        "actual_standard_error": 0.4360483490306202
+      },
+      {
+        "decile": 2,
+        "n": 1459,
+        "mean_predicted_days": 11.637431592816593,
+        "mean_actual_days": 12.600890370751149,
+        "median_actual_days": 4.638888888888889,
+        "mae_days": 13.03650251726126,
+        "actual_standard_error": 0.6368107079407791
+      },
+      {
+        "decile": 3,
+        "n": 1459,
+        "mean_predicted_days": 16.252198732130708,
+        "mean_actual_days": 17.768061235498692,
+        "median_actual_days": 6.79375,
+        "mae_days": 17.611376074088703,
+        "actual_standard_error": 0.7429452113349381
+      },
+      {
+        "decile": 4,
+        "n": 1459,
+        "mean_predicted_days": 19.80714026675926,
+        "mean_actual_days": 20.420223493069834,
+        "median_actual_days": 7.303472222222222,
+        "mae_days": 20.346292359035186,
+        "actual_standard_error": 0.9320794280943477
+      },
+      {
+        "decile": 5,
+        "n": 1459,
+        "mean_predicted_days": 22.98669023527689,
+        "mean_actual_days": 21.058968503287385,
+        "median_actual_days": 8.217361111111112,
+        "mae_days": 21.280068551604813,
+        "actual_standard_error": 0.8329332802056335
+      },
+      {
+        "decile": 6,
+        "n": 1459,
+        "mean_predicted_days": 26.759075680466044,
+        "mean_actual_days": 22.16127962931231,
+        "median_actual_days": 9.152777777777779,
+        "mae_days": 23.61443410713164,
+        "actual_standard_error": 0.8627992379972755
+      },
+      {
+        "decile": 7,
+        "n": 1459,
+        "mean_predicted_days": 31.56879477208939,
+        "mean_actual_days": 27.22059069028762,
+        "median_actual_days": 12.046527777777778,
+        "mae_days": 27.128756790228827,
+        "actual_standard_error": 0.9526121999033056
+      },
+      {
+        "decile": 8,
+        "n": 1459,
+        "mean_predicted_days": 37.134311042725265,
+        "mean_actual_days": 28.439849195923134,
+        "median_actual_days": 11.035416666666666,
+        "mae_days": 31.37911510739094,
+        "actual_standard_error": 1.0756977848828706
+      },
+      {
+        "decile": 9,
+        "n": 1459,
+        "mean_predicted_days": 47.87441226170286,
+        "mean_actual_days": 35.539577336074935,
+        "median_actual_days": 17.058333333333334,
+        "mae_days": 38.4089638701072,
+        "actual_standard_error": 1.301128068991044
+      },
+      {
+        "decile": 10,
+        "n": 1459,
+        "mean_predicted_days": 70.5896155309507,
+        "mean_actual_days": 40.83273399620491,
+        "median_actual_days": 34.21666666666667,
+        "mae_days": 42.105704832903804,
+        "actual_standard_error": 1.0381897424095745
+      }
+    ]
+  },
+  "regression_variants": {
+    "chosen": "raw_absolute",
+    "comparison": {
+      "log1p": {
+        "n": 14591,
+        "mae_days": 18.557054964658168,
+        "median_absolute_error_days": 6.272985109499004,
+        "rmse_days": 37.73625080604046,
+        "r2": -0.09079046381289135,
+        "mean_bias_days": -14.147597446250998,
+        "mean_actual_days": 23.172385702944737,
+        "mean_predicted_days": 9.02478825669374,
+        "within_7_days_rate": 0.527928174902337,
+        "within_14_days_rate": 0.692207525186759,
+        "bias_by_decile": [
+          {
+            "decile": 1,
+            "n": 1460,
+            "mean_predicted_days": 1.2323701420889845,
+            "mean_actual_days": 5.693662512683916,
+            "mean_bias_days": -4.461292370594932
+          },
+          {
+            "decile": 2,
+            "n": 1459,
+            "mean_predicted_days": 3.218974901158224,
+            "mean_actual_days": 12.600890370751149,
+            "mean_bias_days": -9.381915469592924
+          },
+          {
+            "decile": 3,
+            "n": 1459,
+            "mean_predicted_days": 4.7596033581718284,
+            "mean_actual_days": 17.768061235498692,
+            "mean_bias_days": -13.008457877326865
+          },
+          {
+            "decile": 4,
+            "n": 1459,
+            "mean_predicted_days": 5.946411690191452,
+            "mean_actual_days": 20.420223493069834,
+            "mean_bias_days": -14.473811802878382
+          },
+          {
+            "decile": 5,
+            "n": 1459,
+            "mean_predicted_days": 7.007896487607043,
+            "mean_actual_days": 21.058968503287385,
+            "mean_bias_days": -14.05107201568034
+          },
+          {
+            "decile": 6,
+            "n": 1459,
+            "mean_predicted_days": 8.267297924825856,
+            "mean_actual_days": 22.16127962931231,
+            "mean_bias_days": -13.893981704486459
+          },
+          {
+            "decile": 7,
+            "n": 1459,
+            "mean_predicted_days": 9.873010603082006,
+            "mean_actual_days": 27.22059069028762,
+            "mean_bias_days": -17.34758008720561
+          },
+          {
+            "decile": 8,
+            "n": 1459,
+            "mean_predicted_days": 11.731044277515307,
+            "mean_actual_days": 28.439849195923134,
+            "mean_bias_days": -16.70880491840783
+          },
+          {
+            "decile": 9,
+            "n": 1459,
+            "mean_predicted_days": 15.31660018307778,
+            "mean_actual_days": 35.539577336074935,
+            "mean_bias_days": -20.222977152997156
+          },
+          {
+            "decile": 10,
+            "n": 1459,
+            "mean_predicted_days": 22.90001393007196,
+            "mean_actual_days": 40.83273399620491,
+            "mean_bias_days": -17.932720066132948
+          }
+        ],
+        "max_abs_decile_bias_days": 20.222977152997156
+      },
+      "log1p_smearing": {
+        "n": 14591,
+        "mae_days": 24.155076452240007,
+        "median_absolute_error_days": 17.264236137961248,
+        "rmse_days": 36.471644573616935,
+        "r2": -0.018906955386370328,
+        "mean_bias_days": 5.855047334588077,
+        "mean_actual_days": 23.172385702944737,
+        "mean_predicted_days": 29.027433037532813,
+        "within_7_days_rate": 0.21177438146802824,
+        "within_14_days_rate": 0.41114385580152146,
+        "bias_by_decile": [
+          {
+            "decile": 1,
+            "n": 1460,
+            "mean_predicted_days": 5.680662159572854,
+            "mean_actual_days": 5.693662512683916,
+            "mean_bias_days": -0.013000353111062764
+          },
+          {
+            "decile": 2,
+            "n": 1459,
+            "mean_predicted_days": 11.637431592816593,
+            "mean_actual_days": 12.600890370751149,
+            "mean_bias_days": -0.9634587779345575
+          },
+          {
+            "decile": 3,
+            "n": 1459,
+            "mean_predicted_days": 16.252198732130708,
+            "mean_actual_days": 17.768061235498692,
+            "mean_bias_days": -1.5158625033679862
+          },
+          {
+            "decile": 4,
+            "n": 1459,
+            "mean_predicted_days": 19.80714026675926,
+            "mean_actual_days": 20.420223493069834,
+            "mean_bias_days": -0.6130832263105768
+          },
+          {
+            "decile": 5,
+            "n": 1459,
+            "mean_predicted_days": 22.98669023527689,
+            "mean_actual_days": 21.058968503287385,
+            "mean_bias_days": 1.9277217319895068
+          },
+          {
+            "decile": 6,
+            "n": 1459,
+            "mean_predicted_days": 26.759075680466044,
+            "mean_actual_days": 22.16127962931231,
+            "mean_bias_days": 4.597796051153733
+          },
+          {
+            "decile": 7,
+            "n": 1459,
+            "mean_predicted_days": 31.56879477208939,
+            "mean_actual_days": 27.22059069028762,
+            "mean_bias_days": 4.348204081801776
+          },
+          {
+            "decile": 8,
+            "n": 1459,
+            "mean_predicted_days": 37.134311042725265,
+            "mean_actual_days": 28.439849195923134,
+            "mean_bias_days": 8.694461846802128
+          },
+          {
+            "decile": 9,
+            "n": 1459,
+            "mean_predicted_days": 47.87441226170286,
+            "mean_actual_days": 35.539577336074935,
+            "mean_bias_days": 12.334834925627922
+          },
+          {
+            "decile": 10,
+            "n": 1459,
+            "mean_predicted_days": 70.5896155309507,
+            "mean_actual_days": 40.83273399620491,
+            "mean_bias_days": 29.756881534745798
+          }
+        ],
+        "max_abs_decile_bias_days": 29.756881534745798
+      },
+      "raw_absolute": {
+        "n": 14591,
+        "mae_days": 18.67821636333992,
+        "median_absolute_error_days": 5.907124263276928,
+        "rmse_days": 38.172387637341025,
+        "r2": -0.11614979518493462,
+        "mean_bias_days": -14.258307516021247,
+        "mean_actual_days": 23.172385702944737,
+        "mean_predicted_days": 8.914078186923494,
+        "within_7_days_rate": 0.5414296484134056,
+        "within_14_days_rate": 0.6863134809128915,
+        "bias_by_decile": [
+          {
+            "decile": 1,
+            "n": 1460,
+            "mean_predicted_days": 0.8775654222174363,
+            "mean_actual_days": 8.63078840848554,
+            "mean_bias_days": -7.753222986268104
+          },
+          {
+            "decile": 2,
+            "n": 1459,
+            "mean_predicted_days": 3.1354570834302518,
+            "mean_actual_days": 15.184426658924174,
+            "mean_bias_days": -12.04896957549392
+          },
+          {
+            "decile": 3,
+            "n": 1459,
+            "mean_predicted_days": 4.384779478023012,
+            "mean_actual_days": 14.13105619177265,
+            "mean_bias_days": -9.746276713749637
+          },
+          {
+            "decile": 4,
+            "n": 1459,
+            "mean_predicted_days": 5.3787993381897845,
+            "mean_actual_days": 19.48125075362374,
+            "mean_bias_days": -14.102451415433954
+          },
+          {
+            "decile": 5,
+            "n": 1459,
+            "mean_predicted_days": 6.19934065448514,
+            "mean_actual_days": 19.957321867146444,
+            "mean_bias_days": -13.757981212661305
+          },
+          {
+            "decile": 6,
+            "n": 1459,
+            "mean_predicted_days": 7.263641396505425,
+            "mean_actual_days": 23.84092922600462,
+            "mean_bias_days": -16.5772878294992
+          },
+          {
+            "decile": 7,
+            "n": 1459,
+            "mean_predicted_days": 8.381820532344124,
+            "mean_actual_days": 26.11680457981113,
+            "mean_bias_days": -17.734984047467012
+          },
+          {
+            "decile": 8,
+            "n": 1459,
+            "mean_predicted_days": 10.528297059280494,
+            "mean_actual_days": 34.67431563824791,
+            "mean_bias_days": -24.146018578967418
+          },
+          {
+            "decile": 9,
+            "n": 1459,
+            "mean_predicted_days": 15.031717054283371,
+            "mean_actual_days": 35.18623887016729,
+            "mean_bias_days": -20.154521815883918
+          },
+          {
+            "decile": 10,
+            "n": 1459,
+            "mean_predicted_days": 27.96487208403635,
+            "mean_actual_days": 34.53069166000304,
+            "mean_bias_days": -6.565819575966694
+          }
+        ],
+        "max_abs_decile_bias_days": 24.146018578967418
+      }
+    }
+  },
+  "classifier": {
+    "target": "stay_90_plus = length_of_stay_days >= 90",
+    "train_positive_rate": 0.039456360743869656,
+    "test": {
+      "pr_auc": 0.1174359985291892,
+      "pr_auc_baseline": 0.04886573915427318,
+      "pr_auc_lift": 2.4032379446555394,
+      "roc_auc": 0.7153896396710504,
+      "brier_score": 0.04514605488554584,
+      "positive_rate": 0.04886573915427318,
+      "n": 14591
+    },
+    "baseline_positive_rate": {
+      "description": "predict the training positive rate for everyone",
+      "pr_auc": 0.04886573915427318,
+      "pr_auc_baseline": 0.04886573915427318,
+      "pr_auc_lift": 1.0,
+      "roc_auc": 0.5,
+      "brier_score": 0.046566415093249894,
+      "positive_rate": 0.04886573915427318,
+      "n": 14591
+    },
+    "threshold_policy": {
+      "cost_ratio_miss_to_false_alarm": 9.0,
+      "operating_threshold": 0.1,
+      "derivation": "p* = 1 / (1 + cost_ratio); derived from the stated cost ratio, not tuned against any metric",
+      "chosen_on": "cost ratio only; reference thresholds below are chosen on the validation period, never on test"
+    },
+    "at_operating_threshold": {
+      "threshold": 0.1,
+      "precision": 0.13765718067504965,
+      "recall": 0.2917251051893408,
+      "f1": 0.18705035971223025,
+      "flagged": 1511,
+      "flagged_rate": 0.10355698718388047,
+      "confusion_matrix": {
+        "true_negative": 12575,
+        "false_positive": 1303,
+        "false_negative": 505,
+        "true_positive": 208
+      }
+    },
+    "at_recall_50": {
+      "threshold": 0.06511270550804342,
+      "precision": 0.10446313065976714,
+      "recall": 0.453015427769986,
+      "f1": 0.16977660972404732,
+      "flagged": 3092,
+      "flagged_rate": 0.21191145226509492,
+      "confusion_matrix": {
+        "true_negative": 11109,
+        "false_positive": 2769,
+        "false_negative": 390,
+        "true_positive": 323
+      }
+    },
+    "at_precision_50": {
+      "unattainable": true,
+      "note": "precision 50% is not reachable at any threshold on validation \u2014 the model never gets that confident"
+    },
+    "calibration": {
+      "method": "none (raw scores)",
+      "isotonic_applied": false,
+      "fitted_on": "validation period only",
+      "decision": "Isotonic was fitted, measured, and switched OFF: it left the Brier score unchanged and made the expected calibration error worse. Both curves are reported so the decision is visible rather than asserted.",
+      "brier_raw": 0.04514605488554584,
+      "brier_isotonic": 0.045563849456624866,
+      "brier_in_use": 0.04514605488554584,
+      "expected_calibration_error_raw": 0.010881419212413349,
+      "expected_calibration_error_isotonic": 0.016665116684653772,
+      "reliability_before": [
+        {
+          "bin": 1,
+          "n": 1460,
+          "mean_predicted_probability": 0.0006351552901868702,
+          "actual_positive_rate": 0.007534246575342466,
+          "standard_error": 0.002263087009127075
+        },
+        {
+          "bin": 2,
+          "n": 1459,
+          "mean_predicted_probability": 0.0036075237273152944,
+          "actual_positive_rate": 0.01439342015078821,
+          "standard_error": 0.0031182156906343233
+        },
+        {
+          "bin": 3,
+          "n": 1459,
+          "mean_predicted_probability": 0.00781898084617395,
+          "actual_positive_rate": 0.019876627827278958,
+          "standard_error": 0.00365413072368535
+        },
+        {
+          "bin": 4,
+          "n": 1459,
+          "mean_predicted_probability": 0.013936361528168609,
+          "actual_positive_rate": 0.03221384509938314,
+          "standard_error": 0.004622568329377542
+        },
+        {
+          "bin": 5,
+          "n": 1459,
+          "mean_predicted_probability": 0.023261083263720242,
+          "actual_positive_rate": 0.02810143934201508,
+          "standard_error": 0.004326603586439282
+        },
+        {
+          "bin": 6,
+          "n": 1459,
+          "mean_predicted_probability": 0.033683797263977557,
+          "actual_positive_rate": 0.04318026045236463,
+          "standard_error": 0.005321450736739364
+        },
+        {
+          "bin": 7,
+          "n": 1459,
+          "mean_predicted_probability": 0.04474207073570859,
+          "actual_positive_rate": 0.05757368060315284,
+          "standard_error": 0.006098289735692431
+        },
+        {
+          "bin": 8,
+          "n": 1459,
+          "mean_predicted_probability": 0.05865591336918198,
+          "actual_positive_rate": 0.06922549691569568,
+          "standard_error": 0.006645499566704499
+        },
+        {
+          "bin": 9,
+          "n": 1459,
+          "mean_predicted_probability": 0.08296193643911026,
+          "actual_positive_rate": 0.07676490747087046,
+          "standard_error": 0.006969632378984559
+        },
+        {
+          "bin": 10,
+          "n": 1459,
+          "mean_predicted_probability": 0.15668355745620244,
+          "actual_positive_rate": 0.13982179575051404,
+          "standard_error": 0.009079334335912898
+        }
+      ],
+      "reliability_after": [
+        {
+          "bin": 1,
+          "n": 1460,
+          "mean_predicted_probability": 0.01741463414634146,
+          "actual_positive_rate": 0.00821917808219178,
+          "standard_error": 0.0023629015124266356
+        },
+        {
+          "bin": 2,
+          "n": 1459,
+          "mean_predicted_probability": 0.024566623833160477,
+          "actual_positive_rate": 0.01439342015078821,
+          "standard_error": 0.0031182156906343233
+        },
+        {
+          "bin": 3,
+          "n": 1459,
+          "mean_predicted_probability": 0.030964467522605458,
+          "actual_positive_rate": 0.019191226867717615,
+          "standard_error": 0.0035918310026164498
+        },
+        {
+          "bin": 4,
+          "n": 1459,
+          "mean_predicted_probability": 0.04070414040260491,
+          "actual_positive_rate": 0.031528444139821796,
+          "standard_error": 0.0045747467672957315
+        },
+        {
+          "bin": 5,
+          "n": 1459,
+          "mean_predicted_probability": 0.04421052631578948,
+          "actual_positive_rate": 0.030843043180260453,
+          "standard_error": 0.0045263488643993
+        },
+        {
+          "bin": 6,
+          "n": 1459,
+          "mean_predicted_probability": 0.05032894285424359,
+          "actual_positive_rate": 0.061686086360520906,
+          "standard_error": 0.006298542163541528
+        },
+        {
+          "bin": 7,
+          "n": 1459,
+          "mean_predicted_probability": 0.05517280680717311,
+          "actual_positive_rate": 0.039753255654557916,
+          "standard_error": 0.005115052865005745
+        },
+        {
+          "bin": 8,
+          "n": 1459,
+          "mean_predicted_probability": 0.07441493542615779,
+          "actual_positive_rate": 0.07470870459218643,
+          "standard_error": 0.006883307880808762
+        },
+        {
+          "bin": 9,
+          "n": 1459,
+          "mean_predicted_probability": 0.09570932515944273,
+          "actual_positive_rate": 0.07333790267306374,
+          "standard_error": 0.006824915784519598
+        },
+        {
+          "bin": 10,
+          "n": 1459,
+          "mean_predicted_probability": 0.19855330948165717,
+          "actual_positive_rate": 0.13502398903358465,
+          "standard_error": 0.008947049759344768
+        }
+      ],
+      "ranking_preserved": true,
+      "spearman_after_calibration": 0.9951257575578233
+    },
+    "by_animal_type": {
+      "Dog": {
+        "pr_auc": 0.17855199643318306,
+        "pr_auc_baseline": 0.06530109348529185,
+        "pr_auc_lift": 2.734288001982683,
+        "roc_auc": 0.7686656516102557,
+        "brier_score": 0.05819570395768471,
+        "positive_rate": 0.06530109348529185,
+        "n": 6493,
+        "at_operating_threshold": {
+          "threshold": 0.1,
+          "precision": 0.2102496714848883,
+          "recall": 0.37735849056603776,
+          "f1": 0.27004219409282704,
+          "flagged": 761,
+          "flagged_rate": 0.11720314184506392,
+          "confusion_matrix": {
+            "true_negative": 5468,
+            "false_positive": 601,
+            "false_negative": 264,
+            "true_positive": 160
+          }
+        }
+      },
+      "Cat": {
+        "pr_auc": 0.06240012738519627,
+        "pr_auc_baseline": 0.03824091778202677,
+        "pr_auc_lift": 1.6317633311228825,
+        "roc_auc": 0.6650330161885828,
+        "brier_score": 0.03710999588307383,
+        "positive_rate": 0.03824091778202677,
+        "n": 7322,
+        "at_operating_threshold": {
+          "threshold": 0.1,
+          "precision": 0.064343163538874,
+          "recall": 0.17142857142857143,
+          "f1": 0.09356725146198831,
+          "flagged": 746,
+          "flagged_rate": 0.10188473094782846,
+          "confusion_matrix": {
+            "true_negative": 6344,
+            "false_positive": 698,
+            "false_negative": 232,
+            "true_positive": 48
+          }
+        }
+      }
+    },
+    "human_summary": "Of 100 animals flagged as at-risk on intake day, 14 really did wait 90+ days. The model finds 29% of all such animals. Flagging at random would find 5 in 100."
+  },
+  "species_diagnosis": {
+    "Cat": {
+      "species": "Cat",
+      "general_model": {
+        "pr_auc": 0.06240012738519627,
+        "pr_auc_baseline": 0.03824091778202677,
+        "pr_auc_lift": 1.6317633311228825,
+        "roc_auc": 0.6650330161885828,
+        "brier_score": 0.03710999588307383,
+        "positive_rate": 0.03824091778202677,
+        "n": 7322
+      },
+      "specialised_model": {
+        "pr_auc": 0.059008922371659445,
+        "pr_auc_baseline": 0.03824091778202677,
+        "pr_auc_lift": 1.5430833200188945,
+        "roc_auc": 0.6568986590660122,
+        "brier_score": 0.03768195508287854,
+        "positive_rate": 0.03824091778202677,
+        "n": 7322
+      },
+      "specialised_improvement": -0.05434612324752002,
+      "specialised_helps": false,
+      "verdict_threshold": 0.2,
+      "permutation_importance_within_species": [
+        {
+          "feature": "sex",
+          "pr_auc_drop": 0.007281207430483673,
+          "std": 0.0016804720780094822
+        },
+        {
+          "feature": "age_days",
+          "pr_auc_drop": 0.0059111797860223626,
+          "std": 0.0034193892041065425
+        },
+        {
+          "feature": "intake_month",
+          "pr_auc_drop": 0.0035547700622936057,
+          "std": 0.003046061538494142
+        },
+        {
+          "feature": "intake_day_of_week",
+          "pr_auc_drop": 0.0015636141289469634,
+          "std": 0.0019010489674755081
+        },
+        {
+          "feature": "primary_breed",
+          "pr_auc_drop": 0.000884951016086373,
+          "std": 0.0010480577587659615
+        },
+        {
+          "feature": "sterilization_status",
+          "pr_auc_drop": 0.0007740316049704855,
+          "std": 0.0020306325089152542
+        },
+        {
+          "feature": "primary_color",
+          "pr_auc_drop": 0.00031535442666866183,
+          "std": 0.002264585645177006
+        },
+        {
+          "feature": "intake_type",
+          "pr_auc_drop": 0.0002358871029356585,
+          "std": 0.0015035476179648306
+        },
+        {
+          "feature": "is_mix",
+          "pr_auc_drop": 0.0002066212943475837,
+          "std": 0.0005559253453874713
+        },
+        {
+          "feature": "intake_season",
+          "pr_auc_drop": 1.3609112965713016e-05,
+          "std": 0.00026336578830132173
+        },
+        {
+          "feature": "animal_type",
+          "pr_auc_drop": 0.0,
+          "std": 0.0
+        },
+        {
+          "feature": "is_black",
+          "pr_auc_drop": -4.461565402024761e-05,
+          "std": 8.671667012473851e-06
+        },
+        {
+          "feature": "intake_condition",
+          "pr_auc_drop": -0.002072223829120099,
+          "std": 0.0027812204187675454
+        }
+      ],
+      "feature_contrast": {
+        "species": "Cat",
+        "n": 7322,
+        "long_stay_rate": 0.03824091778202677,
+        "n_long_stay": 280,
+        "categorical": {
+          "animal_type": {
+            "top": [
+              {
+                "value": "Cat",
+                "n": 7322,
+                "long_stay_rate": 0.03824091778202677,
+                "lift_over_species_base": 1.0
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Cat",
+                "n": 7322,
+                "long_stay_rate": 0.03824091778202677,
+                "lift_over_species_base": 1.0
+              }
+            ],
+            "spread": 0.0
+          },
+          "sex": {
+            "top": [
+              {
+                "value": "Female",
+                "n": 3327,
+                "long_stay_rate": 0.04538623384430418,
+                "lift_over_species_base": 1.1868500150285544
+              },
+              {
+                "value": "Male",
+                "n": 3448,
+                "long_stay_rate": 0.037412993039443156,
+                "lift_over_species_base": 0.9783497679814385
+              },
+              {
+                "value": "Unknown",
+                "n": 547,
+                "long_stay_rate": 0.0,
+                "lift_over_species_base": 0.0
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Female",
+                "n": 3327,
+                "long_stay_rate": 0.04538623384430418,
+                "lift_over_species_base": 1.1868500150285544
+              },
+              {
+                "value": "Male",
+                "n": 3448,
+                "long_stay_rate": 0.037412993039443156,
+                "lift_over_species_base": 0.9783497679814385
+              },
+              {
+                "value": "Unknown",
+                "n": 547,
+                "long_stay_rate": 0.0,
+                "lift_over_species_base": 0.0
+              }
+            ],
+            "spread": 0.04538623384430418
+          },
+          "sterilization_status": {
+            "top": [
+              {
+                "value": "Fixed",
+                "n": 1023,
+                "long_stay_rate": 0.04985337243401759,
+                "lift_over_species_base": 1.30366568914956
+              },
+              {
+                "value": "Intact",
+                "n": 5752,
+                "long_stay_rate": 0.03981223922114047,
+                "lift_over_species_base": 1.0410900556328233
+              },
+              {
+                "value": "Unknown",
+                "n": 547,
+                "long_stay_rate": 0.0,
+                "lift_over_species_base": 0.0
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Fixed",
+                "n": 1023,
+                "long_stay_rate": 0.04985337243401759,
+                "lift_over_species_base": 1.30366568914956
+              },
+              {
+                "value": "Intact",
+                "n": 5752,
+                "long_stay_rate": 0.03981223922114047,
+                "lift_over_species_base": 1.0410900556328233
+              },
+              {
+                "value": "Unknown",
+                "n": 547,
+                "long_stay_rate": 0.0,
+                "lift_over_species_base": 0.0
+              }
+            ],
+            "spread": 0.04985337243401759
+          },
+          "intake_type": {
+            "top": [
+              {
+                "value": "Stray",
+                "n": 5923,
+                "long_stay_rate": 0.039000506500084416,
+                "lift_over_species_base": 1.0198632449772074
+              },
+              {
+                "value": "Owner Surrender",
+                "n": 1128,
+                "long_stay_rate": 0.03634751773049645,
+                "lift_over_species_base": 0.9504875886524822
+              },
+              {
+                "value": "Abandoned",
+                "n": 163,
+                "long_stay_rate": 0.03067484662576687,
+                "lift_over_species_base": 0.8021472392638037
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Owner Surrender",
+                "n": 1128,
+                "long_stay_rate": 0.03634751773049645,
+                "lift_over_species_base": 0.9504875886524822
+              },
+              {
+                "value": "Abandoned",
+                "n": 163,
+                "long_stay_rate": 0.03067484662576687,
+                "lift_over_species_base": 0.8021472392638037
+              },
+              {
+                "value": "Public Assist",
+                "n": 108,
+                "long_stay_rate": 0.027777777777777776,
+                "lift_over_species_base": 0.7263888888888889
+              }
+            ],
+            "spread": 0.01122272872230664
+          },
+          "intake_condition": {
+            "top": [
+              {
+                "value": "Injured",
+                "n": 506,
+                "long_stay_rate": 0.06719367588932806,
+                "lift_over_species_base": 1.7571146245059288
+              },
+              {
+                "value": "Sick",
+                "n": 433,
+                "long_stay_rate": 0.050808314087759814,
+                "lift_over_species_base": 1.328637413394919
+              },
+              {
+                "value": "Neonatal",
+                "n": 638,
+                "long_stay_rate": 0.048589341692789965,
+                "lift_over_species_base": 1.2706112852664575
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Neonatal",
+                "n": 638,
+                "long_stay_rate": 0.048589341692789965,
+                "lift_over_species_base": 1.2706112852664575
+              },
+              {
+                "value": "Medical",
+                "n": 113,
+                "long_stay_rate": 0.04424778761061947,
+                "lift_over_species_base": 1.157079646017699
+              },
+              {
+                "value": "Normal",
+                "n": 5591,
+                "long_stay_rate": 0.03308889286353067,
+                "lift_over_species_base": 0.8652745483813271
+              }
+            ],
+            "spread": 0.03410478302579739
+          },
+          "primary_breed": {
+            "top": [
+              {
+                "value": "Siamese",
+                "n": 165,
+                "long_stay_rate": 0.06060606060606061,
+                "lift_over_species_base": 1.584848484848485
+              },
+              {
+                "value": "Domestic Longhair",
+                "n": 185,
+                "long_stay_rate": 0.04864864864864865,
+                "lift_over_species_base": 1.2721621621621622
+              },
+              {
+                "value": "Domestic Shorthair",
+                "n": 6422,
+                "long_stay_rate": 0.03799439426969791,
+                "lift_over_species_base": 0.9935534101526003
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Domestic Longhair",
+                "n": 185,
+                "long_stay_rate": 0.04864864864864865,
+                "lift_over_species_base": 1.2721621621621622
+              },
+              {
+                "value": "Domestic Shorthair",
+                "n": 6422,
+                "long_stay_rate": 0.03799439426969791,
+                "lift_over_species_base": 0.9935534101526003
+              },
+              {
+                "value": "Domestic Medium Hair",
+                "n": 472,
+                "long_stay_rate": 0.03389830508474576,
+                "lift_over_species_base": 0.8864406779661017
+              }
+            ],
+            "spread": 0.026707755521314845
+          },
+          "primary_color": {
+            "top": [
+              {
+                "value": "Calico",
+                "n": 340,
+                "long_stay_rate": 0.06470588235294118,
+                "lift_over_species_base": 1.6920588235294118
+              },
+              {
+                "value": "White",
+                "n": 413,
+                "long_stay_rate": 0.05569007263922518,
+                "lift_over_species_base": 1.4562953995157384
+              },
+              {
+                "value": "Torbie",
+                "n": 302,
+                "long_stay_rate": 0.04966887417218543,
+                "lift_over_species_base": 1.298841059602649
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Orange Tabby",
+                "n": 871,
+                "long_stay_rate": 0.03214695752009185,
+                "lift_over_species_base": 0.8406429391504018
+              },
+              {
+                "value": "Blue",
+                "n": 395,
+                "long_stay_rate": 0.027848101265822784,
+                "lift_over_species_base": 0.7282278481012658
+              },
+              {
+                "value": "Tortie",
+                "n": 313,
+                "long_stay_rate": 0.025559105431309903,
+                "lift_over_species_base": 0.668370607028754
+              }
+            ],
+            "spread": 0.03914677692163128
+          },
+          "intake_month": {
+            "top": [
+              {
+                "value": "5",
+                "n": 895,
+                "long_stay_rate": 0.06480446927374302,
+                "lift_over_species_base": 1.69463687150838
+              },
+              {
+                "value": "9",
+                "n": 566,
+                "long_stay_rate": 0.061837455830388695,
+                "lift_over_species_base": 1.6170494699646643
+              },
+              {
+                "value": "8",
+                "n": 488,
+                "long_stay_rate": 0.06147540983606557,
+                "lift_over_species_base": 1.6075819672131146
+              }
+            ],
+            "bottom": [
+              {
+                "value": "11",
+                "n": 387,
+                "long_stay_rate": 0.025839793281653745,
+                "lift_over_species_base": 0.6757105943152454
+              },
+              {
+                "value": "6",
+                "n": 597,
+                "long_stay_rate": 0.020100502512562814,
+                "lift_over_species_base": 0.5256281407035176
+              },
+              {
+                "value": "3",
+                "n": 688,
+                "long_stay_rate": 0.0188953488372093,
+                "lift_over_species_base": 0.4941133720930232
+              }
+            ],
+            "spread": 0.04590912043653372
+          },
+          "intake_day_of_week": {
+            "top": [
+              {
+                "value": "1",
+                "n": 1264,
+                "long_stay_rate": 0.0625,
+                "lift_over_species_base": 1.634375
+              },
+              {
+                "value": "2",
+                "n": 1243,
+                "long_stay_rate": 0.04907481898632341,
+                "lift_over_species_base": 1.2833065164923572
+              },
+              {
+                "value": "6",
+                "n": 366,
+                "long_stay_rate": 0.03278688524590164,
+                "lift_over_species_base": 0.8573770491803279
+              }
+            ],
+            "bottom": [
+              {
+                "value": "3",
+                "n": 1183,
+                "long_stay_rate": 0.029585798816568046,
+                "lift_over_species_base": 0.7736686390532543
+              },
+              {
+                "value": "5",
+                "n": 538,
+                "long_stay_rate": 0.027881040892193308,
+                "lift_over_species_base": 0.729089219330855
+              },
+              {
+                "value": "0",
+                "n": 1364,
+                "long_stay_rate": 0.027126099706744868,
+                "lift_over_species_base": 0.7093475073313783
+              }
+            ],
+            "spread": 0.03537390029325513
+          },
+          "intake_season": {
+            "top": [
+              {
+                "value": "Spring",
+                "n": 2528,
+                "long_stay_rate": 0.04113924050632911,
+                "lift_over_species_base": 1.0757911392405062
+              },
+              {
+                "value": "Fall",
+                "n": 1538,
+                "long_stay_rate": 0.04031209362808843,
+                "lift_over_species_base": 1.0541612483745124
+              },
+              {
+                "value": "Summer",
+                "n": 1593,
+                "long_stay_rate": 0.038292529817953544,
+                "lift_over_species_base": 1.0013496547394851
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Fall",
+                "n": 1538,
+                "long_stay_rate": 0.04031209362808843,
+                "lift_over_species_base": 1.0541612483745124
+              },
+              {
+                "value": "Summer",
+                "n": 1593,
+                "long_stay_rate": 0.038292529817953544,
+                "lift_over_species_base": 1.0013496547394851
+              },
+              {
+                "value": "Winter",
+                "n": 1663,
+                "long_stay_rate": 0.03187011425135298,
+                "lift_over_species_base": 0.8334034876728804
+              }
+            ],
+            "spread": 0.009269126254976133
+          },
+          "is_mix": {
+            "top": [
+              {
+                "value": "True",
+                "n": 468,
+                "long_stay_rate": 0.06837606837606838,
+                "lift_over_species_base": 1.7880341880341881
+              },
+              {
+                "value": "False",
+                "n": 6854,
+                "long_stay_rate": 0.03618325065655092,
+                "lift_over_species_base": 0.9461920046688065
+              }
+            ],
+            "bottom": [
+              {
+                "value": "True",
+                "n": 468,
+                "long_stay_rate": 0.06837606837606838,
+                "lift_over_species_base": 1.7880341880341881
+              },
+              {
+                "value": "False",
+                "n": 6854,
+                "long_stay_rate": 0.03618325065655092,
+                "lift_over_species_base": 0.9461920046688065
+              }
+            ],
+            "spread": 0.032192817719517465
+          },
+          "is_black": {
+            "top": [
+              {
+                "value": "True",
+                "n": 1547,
+                "long_stay_rate": 0.0400775694893342,
+                "lift_over_species_base": 1.0480284421460893
+              },
+              {
+                "value": "False",
+                "n": 5775,
+                "long_stay_rate": 0.03774891774891775,
+                "lift_over_species_base": 0.9871341991341991
+              }
+            ],
+            "bottom": [
+              {
+                "value": "True",
+                "n": 1547,
+                "long_stay_rate": 0.0400775694893342,
+                "lift_over_species_base": 1.0480284421460893
+              },
+              {
+                "value": "False",
+                "n": 5775,
+                "long_stay_rate": 0.03774891774891775,
+                "lift_over_species_base": 0.9871341991341991
+              }
+            ],
+            "spread": 0.0023286517404164514
+          }
+        },
+        "numeric": {
+          "age_days": {
+            "mean_long_stay": 570.8073660714285,
+            "mean_short_stay": 413.93971882987785,
+            "median_long_stay": 60.875,
+            "median_short_stay": 91.3125
+          }
+        },
+        "most_separating_features": [
+          {
+            "feature": "sterilization_status",
+            "spread": 0.04985337243401759
+          },
+          {
+            "feature": "intake_month",
+            "spread": 0.04590912043653372
+          },
+          {
+            "feature": "sex",
+            "spread": 0.04538623384430418
+          },
+          {
+            "feature": "primary_color",
+            "spread": 0.03914677692163128
+          },
+          {
+            "feature": "intake_day_of_week",
+            "spread": 0.03537390029325513
+          }
+        ]
+      },
+      "reliable": false
+    },
+    "Dog": {
+      "species": "Dog",
+      "general_model": {
+        "pr_auc": 0.17855199643318306,
+        "pr_auc_baseline": 0.06530109348529185,
+        "pr_auc_lift": 2.734288001982683,
+        "roc_auc": 0.7686656516102557,
+        "brier_score": 0.05819570395768471,
+        "positive_rate": 0.06530109348529185,
+        "n": 6493
+      },
+      "specialised_model": {
+        "pr_auc": 0.1742974342832869,
+        "pr_auc_baseline": 0.06530109348529185,
+        "pr_auc_lift": 2.6691350018900515,
+        "roc_auc": 0.7683901251954721,
+        "brier_score": 0.058487980980513984,
+        "positive_rate": 0.06530109348529185,
+        "n": 6493
+      },
+      "specialised_improvement": -0.02382814101710866,
+      "specialised_helps": false,
+      "verdict_threshold": 0.2,
+      "permutation_importance_within_species": [
+        {
+          "feature": "primary_breed",
+          "pr_auc_drop": 0.06975711152429127,
+          "std": 0.006615737674724802
+        },
+        {
+          "feature": "age_days",
+          "pr_auc_drop": 0.06667268998448436,
+          "std": 0.007153080523210511
+        },
+        {
+          "feature": "intake_type",
+          "pr_auc_drop": 0.019990854837656735,
+          "std": 0.0038269159342886583
+        },
+        {
+          "feature": "intake_condition",
+          "pr_auc_drop": 0.005285961282637886,
+          "std": 0.0024686489486967773
+        },
+        {
+          "feature": "sterilization_status",
+          "pr_auc_drop": 0.0046102506639530555,
+          "std": 0.002293739303399492
+        },
+        {
+          "feature": "sex",
+          "pr_auc_drop": 0.002671902994029099,
+          "std": 0.0016597338189998877
+        },
+        {
+          "feature": "intake_season",
+          "pr_auc_drop": 0.00014682988892893988,
+          "std": 4.615287398673248e-05
+        },
+        {
+          "feature": "is_black",
+          "pr_auc_drop": 7.845029480599564e-05,
+          "std": 4.197713030245017e-05
+        },
+        {
+          "feature": "animal_type",
+          "pr_auc_drop": 0.0,
+          "std": 0.0
+        },
+        {
+          "feature": "is_mix",
+          "pr_auc_drop": -0.00031848855769170403,
+          "std": 0.0016520028213006268
+        },
+        {
+          "feature": "intake_day_of_week",
+          "pr_auc_drop": -0.0010259730509050518,
+          "std": 0.0029470733032759553
+        },
+        {
+          "feature": "primary_color",
+          "pr_auc_drop": -0.0032627921220570845,
+          "std": 0.0040455574168323785
+        },
+        {
+          "feature": "intake_month",
+          "pr_auc_drop": -0.004422571884736151,
+          "std": 0.0052482574896820485
+        }
+      ],
+      "feature_contrast": {
+        "species": "Dog",
+        "n": 6493,
+        "long_stay_rate": 0.06530109348529185,
+        "n_long_stay": 424,
+        "categorical": {
+          "animal_type": {
+            "top": [
+              {
+                "value": "Dog",
+                "n": 6493,
+                "long_stay_rate": 0.06530109348529185,
+                "lift_over_species_base": 1.0
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Dog",
+                "n": 6493,
+                "long_stay_rate": 0.06530109348529185,
+                "lift_over_species_base": 1.0
+              }
+            ],
+            "spread": 0.0
+          },
+          "sex": {
+            "top": [
+              {
+                "value": "Male",
+                "n": 3343,
+                "long_stay_rate": 0.06999700867484296,
+                "lift_over_species_base": 1.0719117389758381
+              },
+              {
+                "value": "Female",
+                "n": 3071,
+                "long_stay_rate": 0.06186909801367633,
+                "lift_over_species_base": 0.947443522176416
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Male",
+                "n": 3343,
+                "long_stay_rate": 0.06999700867484296,
+                "lift_over_species_base": 1.0719117389758381
+              },
+              {
+                "value": "Female",
+                "n": 3071,
+                "long_stay_rate": 0.06186909801367633,
+                "lift_over_species_base": 0.947443522176416
+              }
+            ],
+            "spread": 0.00812791066116663
+          },
+          "sterilization_status": {
+            "top": [
+              {
+                "value": "Fixed",
+                "n": 1508,
+                "long_stay_rate": 0.08885941644562334,
+                "lift_over_species_base": 1.3607646013713026
+              },
+              {
+                "value": "Intact",
+                "n": 4906,
+                "long_stay_rate": 0.0591112922951488,
+                "lift_over_species_base": 0.9052113699820782
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Fixed",
+                "n": 1508,
+                "long_stay_rate": 0.08885941644562334,
+                "lift_over_species_base": 1.3607646013713026
+              },
+              {
+                "value": "Intact",
+                "n": 4906,
+                "long_stay_rate": 0.0591112922951488,
+                "lift_over_species_base": 0.9052113699820782
+              }
+            ],
+            "spread": 0.029748124150474543
+          },
+          "intake_type": {
+            "top": [
+              {
+                "value": "Owner Surrender",
+                "n": 1459,
+                "long_stay_rate": 0.08361891706648389,
+                "lift_over_species_base": 1.2805132747940564
+              },
+              {
+                "value": "Stray",
+                "n": 3970,
+                "long_stay_rate": 0.06347607052896725,
+                "lift_over_species_base": 0.9720521838315669
+              },
+              {
+                "value": "Abandoned",
+                "n": 303,
+                "long_stay_rate": 0.0594059405940594,
+                "lift_over_species_base": 0.9097235195217634
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Stray",
+                "n": 3970,
+                "long_stay_rate": 0.06347607052896725,
+                "lift_over_species_base": 0.9720521838315669
+              },
+              {
+                "value": "Abandoned",
+                "n": 303,
+                "long_stay_rate": 0.0594059405940594,
+                "lift_over_species_base": 0.9097235195217634
+              },
+              {
+                "value": "Public Assist",
+                "n": 761,
+                "long_stay_rate": 0.04204993429697766,
+                "lift_over_species_base": 0.6439392061091415
+              }
+            ],
+            "spread": 0.04156898276950623
+          },
+          "intake_condition": {
+            "top": [
+              {
+                "value": "Injured",
+                "n": 580,
+                "long_stay_rate": 0.11551724137931034,
+                "lift_over_species_base": 1.7689939817826934
+              },
+              {
+                "value": "Normal",
+                "n": 5141,
+                "long_stay_rate": 0.06360630227582183,
+                "lift_over_species_base": 0.9740465110304508
+              },
+              {
+                "value": "Medical",
+                "n": 168,
+                "long_stay_rate": 0.05357142857142857,
+                "lift_over_species_base": 0.8203756738544474
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Medical",
+                "n": 168,
+                "long_stay_rate": 0.05357142857142857,
+                "lift_over_species_base": 0.8203756738544474
+              },
+              {
+                "value": "Sick",
+                "n": 335,
+                "long_stay_rate": 0.050746268656716415,
+                "lift_over_species_base": 0.7771120811039144
+              },
+              {
+                "value": "Neonatal",
+                "n": 131,
+                "long_stay_rate": 0.0,
+                "lift_over_species_base": 0.0
+              }
+            ],
+            "spread": 0.11551724137931034
+          },
+          "primary_breed": {
+            "top": [
+              {
+                "value": "Pit Bull",
+                "n": 959,
+                "long_stay_rate": 0.14285714285714285,
+                "lift_over_species_base": 2.1876684636118595
+              },
+              {
+                "value": "American Pit Bull Terrier",
+                "n": 100,
+                "long_stay_rate": 0.1,
+                "lift_over_species_base": 1.531367924528302
+              },
+              {
+                "value": "Australian Cattle Dog",
+                "n": 260,
+                "long_stay_rate": 0.07692307692307693,
+                "lift_over_species_base": 1.1779753265602322
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Siberian Husky",
+                "n": 223,
+                "long_stay_rate": 0.04484304932735426,
+                "lift_over_species_base": 0.6867120737795075
+              },
+              {
+                "value": "Great Pyrenees",
+                "n": 188,
+                "long_stay_rate": 0.02127659574468085,
+                "lift_over_species_base": 0.3258229626655961
+              },
+              {
+                "value": "Chihuahua Shorthair",
+                "n": 511,
+                "long_stay_rate": 0.0136986301369863,
+                "lift_over_species_base": 0.2097764280175756
+              }
+            ],
+            "spread": 0.12915851272015655
+          },
+          "primary_color": {
+            "top": [
+              {
+                "value": "Blue",
+                "n": 284,
+                "long_stay_rate": 0.14084507042253522,
+                "lift_over_species_base": 2.1568562317300026
+              },
+              {
+                "value": "Brown Brindle",
+                "n": 312,
+                "long_stay_rate": 0.08653846153846154,
+                "lift_over_species_base": 1.3252222423802613
+              },
+              {
+                "value": "Brown",
+                "n": 1050,
+                "long_stay_rate": 0.07238095238095238,
+                "lift_over_species_base": 1.1084186882300089
+              }
+            ],
+            "bottom": [
+              {
+                "value": "White",
+                "n": 1233,
+                "long_stay_rate": 0.05677210056772101,
+                "lift_over_species_base": 0.8693897381750295
+              },
+              {
+                "value": "Tricolor",
+                "n": 184,
+                "long_stay_rate": 0.05434782608695652,
+                "lift_over_species_base": 0.832265176374077
+              },
+              {
+                "value": "Cream",
+                "n": 128,
+                "long_stay_rate": 0.0390625,
+                "lift_over_species_base": 0.5981905955188679
+              }
+            ],
+            "spread": 0.10178257042253522
+          },
+          "intake_month": {
+            "top": [
+              {
+                "value": "7",
+                "n": 368,
+                "long_stay_rate": 0.10054347826086957,
+                "lift_over_species_base": 1.5396905762920428
+              },
+              {
+                "value": "8",
+                "n": 348,
+                "long_stay_rate": 0.09770114942528736,
+                "lift_over_species_base": 1.496164064194318
+              },
+              {
+                "value": "6",
+                "n": 442,
+                "long_stay_rate": 0.09276018099547512,
+                "lift_over_species_base": 1.4204996584991036
+              }
+            ],
+            "bottom": [
+              {
+                "value": "1",
+                "n": 876,
+                "long_stay_rate": 0.0502283105022831,
+                "lift_over_species_base": 0.7691802360644439
+              },
+              {
+                "value": "2",
+                "n": 911,
+                "long_stay_rate": 0.029637760702524697,
+                "lift_over_species_base": 0.45386316094691714
+              },
+              {
+                "value": "12",
+                "n": 399,
+                "long_stay_rate": 0.022556390977443608,
+                "lift_over_species_base": 0.34542133635976735
+              }
+            ],
+            "spread": 0.07798708728342596
+          },
+          "intake_day_of_week": {
+            "top": [
+              {
+                "value": "1",
+                "n": 1133,
+                "long_stay_rate": 0.07325684024713151,
+                "lift_over_species_base": 1.1218317540675116
+              },
+              {
+                "value": "3",
+                "n": 1175,
+                "long_stay_rate": 0.07319148936170213,
+                "lift_over_species_base": 1.1208309915696506
+              },
+              {
+                "value": "6",
+                "n": 562,
+                "long_stay_rate": 0.06583629893238434,
+                "lift_over_species_base": 1.0081959645471026
+              }
+            ],
+            "bottom": [
+              {
+                "value": "4",
+                "n": 1001,
+                "long_stay_rate": 0.06293706293706294,
+                "lift_over_species_base": 0.9637979944583719
+              },
+              {
+                "value": "0",
+                "n": 1022,
+                "long_stay_rate": 0.05968688845401174,
+                "lift_over_species_base": 0.9140258649337222
+              },
+              {
+                "value": "5",
+                "n": 556,
+                "long_stay_rate": 0.048561151079136694,
+                "lift_over_species_base": 0.7436498914076287
+              }
+            ],
+            "spread": 0.02469568916799482
+          },
+          "intake_season": {
+            "top": [
+              {
+                "value": "Summer",
+                "n": 1158,
+                "long_stay_rate": 0.09671848013816926,
+                "lift_over_species_base": 1.4811157819272005
+              },
+              {
+                "value": "Fall",
+                "n": 1089,
+                "long_stay_rate": 0.0743801652892562,
+                "lift_over_species_base": 1.1390339934508031
+              },
+              {
+                "value": "Spring",
+                "n": 2060,
+                "long_stay_rate": 0.07330097087378641,
+                "lift_over_species_base": 1.1225075563289981
+              }
+            ],
+            "bottom": [
+              {
+                "value": "Fall",
+                "n": 1089,
+                "long_stay_rate": 0.0743801652892562,
+                "lift_over_species_base": 1.1390339934508031
+              },
+              {
+                "value": "Spring",
+                "n": 2060,
+                "long_stay_rate": 0.07330097087378641,
+                "lift_over_species_base": 1.1225075563289981
+              },
+              {
+                "value": "Winter",
+                "n": 2186,
+                "long_stay_rate": 0.036596523330283626,
+                "lift_over_species_base": 0.5604274197724801
+              }
+            ],
+            "spread": 0.06012195680788564
+          },
+          "is_mix": {
+            "top": [
+              {
+                "value": "True",
+                "n": 3742,
+                "long_stay_rate": 0.06600748262960983,
+                "lift_over_species_base": 1.0108174167784354
+              },
+              {
+                "value": "False",
+                "n": 2751,
+                "long_stay_rate": 0.064340239912759,
+                "lift_over_species_base": 0.9852857965885476
+              }
+            ],
+            "bottom": [
+              {
+                "value": "True",
+                "n": 3742,
+                "long_stay_rate": 0.06600748262960983,
+                "lift_over_species_base": 1.0108174167784354
+              },
+              {
+                "value": "False",
+                "n": 2751,
+                "long_stay_rate": 0.064340239912759,
+                "lift_over_species_base": 0.9852857965885476
+              }
+            ],
+            "spread": 0.001667242716850828
+          },
+          "is_black": {
+            "top": [
+              {
+                "value": "False",
+                "n": 4753,
+                "long_stay_rate": 0.06837786661056175,
+                "lift_over_species_base": 1.0471167167508901
+              },
+              {
+                "value": "True",
+                "n": 1740,
+                "long_stay_rate": 0.056896551724137934,
+                "lift_over_species_base": 0.8712955432661028
+              }
+            ],
+            "bottom": [
+              {
+                "value": "False",
+                "n": 4753,
+                "long_stay_rate": 0.06837786661056175,
+                "lift_over_species_base": 1.0471167167508901
+              },
+              {
+                "value": "True",
+                "n": 1740,
+                "long_stay_rate": 0.056896551724137934,
+                "lift_over_species_base": 0.8712955432661028
+              }
+            ],
+            "spread": 0.011481314886423816
+          }
+        },
+        "numeric": {
+          "age_days": {
+            "mean_long_stay": 1075.667600235849,
+            "mean_short_stay": 754.7725465557021,
+            "median_long_stay": 730.5,
+            "median_short_stay": 365.25
+          }
+        },
+        "most_separating_features": [
+          {
+            "feature": "primary_breed",
+            "spread": 0.12915851272015655
+          },
+          {
+            "feature": "intake_condition",
+            "spread": 0.11551724137931034
+          },
+          {
+            "feature": "primary_color",
+            "spread": 0.10178257042253522
+          },
+          {
+            "feature": "intake_month",
+            "spread": 0.07798708728342596
+          },
+          {
+            "feature": "intake_season",
+            "spread": 0.06012195680788564
+          }
+        ]
+      },
+      "reliable": true
+    }
+  },
+  "shelter_load": {
+    "n_animals": 171561,
+    "total_animal_days": 3314799.9058449073,
+    "quick_exit_days_threshold": 7,
+    "quick_exit_share_of_animals": 0.5444011168039357,
+    "quick_exit_share_of_animal_days": 0.07495407303060357,
+    "long_stay_days_threshold": 90,
+    "long_stay_share_of_animals": 0.041973408874977414,
+    "long_stay_share_of_animal_days": 0.33098607620024184,
+    "long_stay_mean_days": 152.3611462608717
+  },
+  "shelter_load_test_period": {
+    "n_animals": 14591,
+    "total_animal_days": 338108.27979166666,
+    "quick_exit_days_threshold": 7,
+    "quick_exit_share_of_animals": 0.4506887807552601,
+    "quick_exit_share_of_animal_days": 0.05636889532319351,
+    "long_stay_days_threshold": 90,
+    "long_stay_share_of_animals": 0.04886573915427318,
+    "long_stay_share_of_animal_days": 0.3059701825316941,
+    "long_stay_mean_days": 145.0926396680692
+  },
+  "calibration": {
+    "interval": {
+      "nominal_coverage": 0.8,
+      "empirical_coverage": 0.754643273250634,
+      "below_interval_rate": 0.0747035844013433,
+      "above_interval_rate": 0.17065314234802276,
+      "mean_interval_width_days": 43.98317777557504,
+      "median_interval_width_days": 40.37454465151244,
+      "quantile_crossing_rate": 0.0,
+      "median_model_mae_days": 18.539273880505164
+    },
+    "table": [
+      {
+        "decile": 1,
+        "n": 1460,
+        "mean_predicted_days": 0.8775654222174363,
+        "mean_actual_days": 8.63078840848554,
+        "median_actual_days": 1.0024305555555557,
+        "mae_days": 8.25463824661737,
+        "actual_standard_error": 0.5870358986045645
+      },
+      {
+        "decile": 2,
+        "n": 1459,
+        "mean_predicted_days": 3.1354570834302518,
+        "mean_actual_days": 15.184426658924174,
+        "median_actual_days": 4.638888888888889,
+        "mae_days": 13.388633661044743,
+        "actual_standard_error": 0.7963872861460628
+      },
+      {
+        "decile": 3,
+        "n": 1459,
+        "mean_predicted_days": 4.384779478023012,
+        "mean_actual_days": 14.13105619177265,
+        "median_actual_days": 6.107638888888889,
+        "mae_days": 11.209400899584876,
+        "actual_standard_error": 0.6560226708097551
+      },
+      {
+        "decile": 4,
+        "n": 1459,
+        "mean_predicted_days": 5.3787993381897845,
+        "mean_actual_days": 19.48125075362374,
+        "median_actual_days": 7.99375,
+        "mae_days": 15.803966323917564,
+        "actual_standard_error": 0.841328074278578
+      },
+      {
+        "decile": 5,
+        "n": 1459,
+        "mean_predicted_days": 6.19934065448514,
+        "mean_actual_days": 19.957321867146444,
+        "median_actual_days": 8.047222222222222,
+        "mae_days": 16.032551331009564,
+        "actual_standard_error": 0.8316295161686361
+      },
+      {
+        "decile": 6,
+        "n": 1459,
+        "mean_predicted_days": 7.263641396505425,
+        "mean_actual_days": 23.84092922600462,
+        "median_actual_days": 10.254861111111111,
+        "mae_days": 19.41125716665371,
+        "actual_standard_error": 0.9083899808263064
+      },
+      {
+        "decile": 7,
+        "n": 1459,
+        "mean_predicted_days": 8.381820532344124,
+        "mean_actual_days": 26.11680457981113,
+        "median_actual_days": 11.04861111111111,
+        "mae_days": 21.286124817495278,
+        "actual_standard_error": 0.9446390114116613
+      },
+      {
+        "decile": 8,
+        "n": 1459,
+        "mean_predicted_days": 10.528297059280494,
+        "mean_actual_days": 34.67431563824791,
+        "median_actual_days": 15.265277777777778,
+        "mae_days": 29.394622923659544,
+        "actual_standard_error": 1.3042011666611992
+      },
+      {
+        "decile": 9,
+        "n": 1459,
+        "mean_predicted_days": 15.031717054283371,
+        "mean_actual_days": 35.18623887016729,
+        "median_actual_days": 17.280555555555555,
+        "mae_days": 28.79075446333429,
+        "actual_standard_error": 1.2570331659578509
+      },
+      {
+        "decile": 10,
+        "n": 1459,
+        "mean_predicted_days": 27.96487208403635,
+        "mean_actual_days": 34.53069166000304,
+        "median_actual_days": 31.18402777777778,
+        "mae_days": 23.21735813052553,
+        "actual_standard_error": 0.7752864032096072
+      }
+    ]
+  },
+  "permutation_importance": [
+    {
+      "feature": "age_days",
+      "mae_increase_days": 1.7299253602497966,
+      "std": 0.03092227713263519
+    },
+    {
+      "feature": "primary_breed",
+      "mae_increase_days": 0.7029752155150814,
+      "std": 0.050985739888380247
+    },
+    {
+      "feature": "sex",
+      "mae_increase_days": 0.4837448719822678,
+      "std": 0.0144552788867078
+    },
+    {
+      "feature": "intake_type",
+      "mae_increase_days": 0.2590170369925076,
+      "std": 0.02276743460570178
+    },
+    {
+      "feature": "sterilization_status",
+      "mae_increase_days": 0.18863220666992503,
+      "std": 0.02246750329562279
+    },
+    {
+      "feature": "intake_condition",
+      "mae_increase_days": 0.1407878967256629,
+      "std": 0.014632369093245993
+    },
+    {
+      "feature": "intake_month",
+      "mae_increase_days": 0.09774281257339687,
+      "std": 0.009080648269473371
+    },
+    {
+      "feature": "is_mix",
+      "mae_increase_days": 0.06553334933463262,
+      "std": 0.005000580315529448
+    },
+    {
+      "feature": "primary_color",
+      "mae_increase_days": 0.05453200582961202,
+      "std": 0.00669444149870621
+    },
+    {
+      "feature": "animal_type",
+      "mae_increase_days": 0.02997088031605699,
+      "std": 0.0024306224135341873
+    },
+    {
+      "feature": "intake_day_of_week",
+      "mae_increase_days": 0.005376156587734116,
+      "std": 0.0027451085682608264
+    },
+    {
+      "feature": "is_black",
+      "mae_increase_days": 0.0,
+      "std": 0.0
+    },
+    {
+      "feature": "intake_season",
+      "mae_increase_days": -0.0004991246046824216,
+      "std": 0.0001407107401207415
+    }
+  ],
+  "failure_analysis": {
+    "worst_predictions": {
+      "n": 50,
+      "under_predicted": 50,
+      "over_predicted": 0,
+      "mean_actual_days": 282.2389722222222,
+      "mean_predicted_days": 9.815519358163188,
+      "min_actual_days": 244.15,
+      "max_actual_days": 361.06597222222223,
+      "mean_absolute_error_days": 272.4234528640591,
+      "by_animal_type": {
+        "Dog": 42,
+        "Cat": 8
+      },
+      "by_intake_type": {
+        "Stray": 35,
+        "Owner Surrender": 12,
+        "Abandoned": 2,
+        "Public Assist": 1
+      },
+      "by_intake_condition": {
+        "Normal": 39,
+        "Injured": 9,
+        "Sick": 1,
+        "Neonatal": 1
+      },
+      "by_age_bucket": {
+        "1-3y": 29,
+        "3-7y": 11,
+        "6-12mo": 5,
+        "7y+": 4,
+        "2-6mo": 1
+      },
+      "top_breeds": {
+        "Pit Bull": 24,
+        "Domestic Shorthair": 7,
+        "Labrador Retriever": 6,
+        "Boxer": 3,
+        "Plott Hound": 2,
+        "Great Dane": 1
+      },
+      "has_name_rate": 1.0
+    },
+    "long_stay_tail": {
+      "threshold_days": 90,
+      "n": 713,
+      "share_of_test": 0.04886573915427318,
+      "mean_actual_days": 145.0926396680692,
+      "median_actual_days": 128.0090277777778,
+      "mean_predicted_days": 11.090934272054012,
+      "median_predicted_days": 8.866886991987588,
+      "mae_days": 134.00170539601515,
+      "mean_bias_days": -134.00170539601515,
+      "under_predicted_rate": 1.0,
+      "predicted_over_threshold_rate": 0.0,
+      "recall_in_top_decile": 0.09957924263674614,
+      "recall_in_top_two_deciles": 0.2917251051893408,
+      "base_rate_top_decile": 0.04866346812885538,
+      "above_p90_band_rate": 0.9368863955119214
+    }
+  },
+  "unobserved_factors": [
+    "photographs and how the animal presents in them",
+    "temperament and behaviour notes",
+    "medical complexity beyond the coarse intake_condition label",
+    "staff effort and volunteer advocacy",
+    "local adoption events, promotions and seasonal campaigns",
+    "kennel location and visibility to visitors"
+  ],
+  "primary_model": {
+    "name": "long_stay_classifier",
+    "output": "risk_probability",
+    "why": "Every regression variant scored a negative R2 on the held-out test set, so the day estimate predicts worse than a constant. The classifier is what works, so it is what the interface leads with."
+  },
+  "day_estimate_caveat": {
+    "text": "Indicative only. On these features the day estimate does no better than a constant (R\u00b2 = -0.116).",
+    "r2": -0.11614979518493462
+  },
+  "model_limitations": [
+    {
+      "id": "negative_r2",
+      "title": "The day estimate is worse than a constant",
+      "detail": "R-squared is negative for all three regression variants (-0.091, -0.019, -0.116). This is a finding, not a bug: length of stay is largely not explained by what is knowable at intake. It is why the headline number is a probability and not a number of days."
+    },
+    {
+      "id": "day_bias",
+      "title": "The day estimate is systematically low",
+      "detail": "About 14 days below actual on average. Removable with Duan's smearing correction, but only at the cost of accuracy, so accuracy was chosen. Read the estimated stay as an order of magnitude, not a date."
+    },
+    {
+      "id": "precision_ceiling",
+      "title": "50% precision is unreachable at any threshold",
+      "detail": "Class imbalance sets the ceiling: only 4.9% of animals stay that long, so most flagged animals will still leave quickly. The tool sorts a queue; it does not deliver a verdict about any individual animal."
+    },
+    {
+      "id": "timing_leak",
+      "title": "One feature was removed for leaking, others cannot be verified",
+      "detail": "has_name looked like the second strongest predictor and was not knowable at intake \u2014 two thirds of strays carried a name in the record. It was removed, at a cost of 7.4% PR-AUC. Breed, colour and intake_condition show the same animal-level storage shape but no positive evidence of harm, and the feed carries no edit history to settle it. They are kept and flagged in config.TEMPORAL_LEAKAGE_NOTES."
+    },
+    {
+      "id": "cat_ceiling",
+      "title": "For cats the model is barely better than chance",
+      "detail": "1.63x better than random flagging. Training a cat-only model improves that by just -5%, so this is the ceiling of the available features rather than a modelling defect. Cats have no equivalent of dog breed, which is the single strongest signal the model has."
+    }
+  ],
+  "findings": [
+    {
+      "id": "load",
+      "label": "FINDING 01",
+      "headline": "Four percent of animals consume a third of the shelter",
+      "chart": "shelter_load.png",
+      "stats": [
+        {
+          "label": "leave within 7 days",
+          "value": "54.4% of animals"
+        },
+        {
+          "label": "their share of animal-days",
+          "value": "7.5%"
+        },
+        {
+          "label": "stay 90+ days",
+          "value": "4.2% of animals"
+        },
+        {
+          "label": "their share of animal-days",
+          "value": "33.1%"
+        },
+        {
+          "label": "mean stay in that group",
+          "value": "152 days"
+        },
+        {
+          "label": "total animal-days",
+          "value": "3,314,800"
+        },
+        {
+          "label": "Pit Bull \u2014 share of long stays vs population",
+          "value": "20.2% vs 8.3% (2.5x)"
+        },
+        {
+          "label": "Injured \u2014 share of long stays vs population",
+          "value": "9.1% vs 6.2% (1.5x)"
+        },
+        {
+          "label": "3-7y \u2014 share of long stays vs population",
+          "value": "20.3% vs 13.8% (1.5x)"
+        },
+        {
+          "label": "Abandoned \u2014 share of long stays vs population",
+          "value": "1.6% vs 1.1% (1.5x)"
+        },
+        {
+          "label": "7y+ \u2014 share of long stays vs population",
+          "value": "11.7% vs 8.0% (1.5x)"
+        }
+      ],
+      "callout": "4% of animals stay longer than three months, and those animals take up 33% of all the time the shelter has to give.",
+      "caveat": "That one sentence is the argument for this entire tool. A small group absorbs a third of everything the shelter has, so identifying them on day one is worth more than marginally improving the experience of the 54% who leave within a week.\n\nIt is measured in animal-days rather than head count, because duration is the resource being consumed. A kennel occupied for 152 days is 152 days of capacity, however you count the animal in it. Both figures cover the whole cleaned dataset, not just the test period.\n\nWhat these animals have in common, drawing on the breakdowns in findings 05 and 07: they skew adult rather than young \u2014 the 3-7 year and 7-year-plus bands are both about 1.5 times over-represented, and finding 05 shows the long-stay rate climbing more than fivefold from puppies to adult dogs even while the median stay stays flat. They skew toward Pit Bulls, who are 2.5 times over-represented and are the single largest signal in the group. They skew injured rather than sick \u2014 finding 07 shows Injured carrying the highest long-stay rate of any common condition despite having one of the shortest median stays, which is the bimodal pattern that makes this group hard to spot early. And they skew toward owner surrenders over strays.\n\nThe over-representation figures compare each group's share of long stays with its share of the whole population. They describe who is in the group; they do not establish cause, and these categories overlap heavily \u2014 an adult surrendered Pit Bull is one animal counted in four of them.",
+      "sample": "171,561 animals over 11.6 years, whole dataset"
+    },
+    {
+      "id": "black",
+      "label": "FINDING 02",
+      "headline": "Black cats wait longer, black dogs do not, and the overall average hides both",
+      "chart": "black_effect.png",
+      "stats": [
+        {
+          "label": "median stay, black (all species)",
+          "value": "6.1 days"
+        },
+        {
+          "label": "median stay, all others",
+          "value": "6.0 days"
+        },
+        {
+          "label": "CATS \u2014 median stay, black vs others",
+          "value": "8.1 vs 7.1 days"
+        },
+        {
+          "label": "CATS \u2014 90+ day rate, black vs others",
+          "value": "5.10% vs 4.21%"
+        },
+        {
+          "label": "DOGS \u2014 median stay, black vs others",
+          "value": "6.0 vs 6.0 days"
+        },
+        {
+          "label": "DOGS \u2014 90+ day rate, black vs others",
+          "value": "4.10% vs 4.49%"
+        },
+        {
+          "label": "raw difference in 90+ rate",
+          "value": "+0.16 pp"
+        },
+        {
+          "label": "controlled difference (age, sex, species, intake type, condition)",
+          "value": "+0.36 pp [+0.13, +0.60]"
+        },
+        {
+          "label": "strata used / animals retained",
+          "value": "225 strata, 96.7% of animals"
+        },
+        {
+          "label": "importance of is_black to the model",
+          "value": "0.000 days"
+        },
+        {
+          "label": "share of animals that are black",
+          "value": "24.2%"
+        }
+      ],
+      "caveat": "An earlier pass compared medians across all animals, saw 6.1 against 6.0 days, and concluded there was nothing here. That was wrong, and the way it was wrong is the interesting part.\n\nThe overall figure is near zero because the two species point in opposite directions and cancel. Black cats wait about a day longer at the median and are 1.21 times as likely to still be there after three months. Black dogs are, if anything, very slightly quicker. Averaging the two produced a null that described neither.\n\nHolding species, age, sex, intake type and intake condition fixed by direct standardisation, being black is associated with +0.36 percentage points on the 90+ day rate, 95% CI [+0.13, +0.60] across 225 strata covering 97% of animals. The interval excludes zero, so the effect is real, but read the size before the significance: on a 4.2% base rate this is a small effect that a sample of 171,561 makes detectable. It is nothing like the folklore version of \"black dog syndrome\", and note that the dogs are the half where the effect is absent.\n\nThe model, meanwhile, finds no use for the feature at all \u2014 0.000 days of permutation importance. An effect can be real and still be too small to help a prediction.\n\nBlack means the primary colour component is literally \"Black\"; \"Black Tabby\" is a pattern, not a solid colour. One shelter, one city, one recording practice \u2014 this says nothing about adopter behaviour anywhere else.",
+      "sample": "68,443 cats and 93,347 dogs; controlled estimate uses 225 strata covering 97% of animals"
+    },
+    {
+      "id": "name_leak",
+      "label": "FINDING 03",
+      "headline": "The strongest predictor we found was measuring our own staff, so we deleted it",
+      "notice": "has_name was the second most important feature in the model. It was removed after the timing audit showed it was not knowable at intake, at a cost of 7.4% PR-AUC and 44 of the 713 long stays the model previously caught.",
+      "chart": "permutation_importance.png",
+      "stats": [
+        {
+          "label": "stray intakes carrying a name",
+          "value": "67.6%"
+        },
+        {
+          "label": "wildlife intakes carrying a name (control)",
+          "value": "3.0%"
+        },
+        {
+          "label": "90+ day rate, named strays",
+          "value": "5.38%"
+        },
+        {
+          "label": "90+ day rate, unnamed strays",
+          "value": "0.89%"
+        },
+        {
+          "label": "gap between them",
+          "value": "6.0x"
+        },
+        {
+          "label": "named among animals staying 90+ days",
+          "value": "94.5%"
+        },
+        {
+          "label": "named among everyone else",
+          "value": "70.3%"
+        },
+        {
+          "label": "named across the whole dataset",
+          "value": "71.3%"
+        },
+        {
+          "label": "intake and outcome name identical",
+          "value": "122,908 of 122,908"
+        },
+        {
+          "label": "cost of removing it (PR-AUC)",
+          "value": "-7.4%"
+        }
+      ],
+      "caveat": "A name looked like the second most useful thing we knew about an animal. It was not knowable at intake: two thirds of animals picked up off the street already carry one in the record, while wildlife \u2014 which nobody names \u2014 sits near zero.\n\nSet the modelling aside and this is a result about the shelter rather than about the data. Naming is a thing staff do, and it concentrates hard: 94.5% of animals who stayed 90+ days have a name against 70.3% of everyone else. Among strays alone \u2014 animals who all arrived the same way, off the street \u2014 the named ones are 6.0 times more likely to still be there after three months (5.38% against 0.89%). Whatever else a name is, it marks an animal the staff have engaged with.\n\nWhat this cannot show is which way it runs. Naming may draw attention that somehow extends a stay, or \u2014 far more likely \u2014 staff name the animals who are still there after a few weeks, so the name follows the long stay rather than preceding it. The data carries no timestamp on the name field, so the two are indistinguishable here. Nothing in this finding says naming an animal harms it, and it should not be read that way.\n\nFor the model the direction does not matter: either way the name is not knowable on day one. Removing it cost 7.4% of PR-AUC and 44 of the long stays we used to catch. We removed it anyway. See config.TEMPORAL_LEAKAGE_NOTES.",
+      "sample": "117,743 stray intakes; 122,908 stays with a name on both sides"
+    },
+    {
+      "id": "duration",
+      "label": "FINDING 04",
+      "headline": "Length of stay in days cannot be predicted here",
+      "chart": "calibration.png",
+      "stats": [
+        {
+          "label": "R\u00b2 of the best variant",
+          "value": "-0.116"
+        },
+        {
+          "label": "MAE",
+          "value": "18.7 days"
+        },
+        {
+          "label": "MAE of a constant (the median)",
+          "value": "20.2 days"
+        },
+        {
+          "label": "classifier PR-AUC",
+          "value": "0.1174"
+        },
+        {
+          "label": "better than chance",
+          "value": "2.40x"
+        }
+      ],
+      "caveat": "A negative R\u00b2 means the day estimate performs worse than a constant. That is the result, not a defect: length of stay is largely not explained by what is knowable at intake. It is why the headline figure is a probability rather than a number of days.",
+      "sample": "14,591 animals in the held-out test period"
+    },
+    {
+      "id": "age",
+      "label": "FINDING 05",
+      "headline": "Age moves the long-stay tail without moving the median, and kittens break the pattern entirely",
+      "chart": "stay_by_age.png",
+      "stats": [
+        {
+          "label": "CATS \u2014 median stay, under 2 months",
+          "value": "11.9 days"
+        },
+        {
+          "label": "CATS \u2014 median stay, 2-6 months",
+          "value": "6.9 days"
+        },
+        {
+          "label": "CATS \u2014 median stay, 7 years and over",
+          "value": "8.1 days"
+        },
+        {
+          "label": "CATS \u2014 90+ rate, 2-6 months vs 7 years and over",
+          "value": "2.15% vs 7.11%"
+        },
+        {
+          "label": "DOGS \u2014 median stay, youngest vs oldest band",
+          "value": "5.0 vs 4.0 days"
+        },
+        {
+          "label": "DOGS \u2014 90+ rate, 2-6 months",
+          "value": "1.19%"
+        },
+        {
+          "label": "DOGS \u2014 90+ rate, 3-7 years",
+          "value": "6.42%"
+        },
+        {
+          "label": "DOGS \u2014 ratio across those bands",
+          "value": "5.4x"
+        },
+        {
+          "label": "cats / dogs in sample",
+          "value": "68,443 / 93,347"
+        }
+      ],
+      "caveat": "Published analyses of this dataset report length of stay rising with age for cats and staying relatively flat for dogs. Tested here, that holds only in part, and the half that fails is the more useful half.\n\nFor dogs the median really is flat \u2014 every age band sits between four and seven days. But the 90+ day rate climbs from 1.19% for puppies to 6.42% for adults, a 5.4-fold difference. \"Flat\" is true of the typical dog and false of the tail, and the tail is what costs kennel space.\n\nFor cats the relationship is not a rise at all, it is U-shaped. Kittens under two months have the LONGEST median stay of any cat band at 11.9 days \u2014 longer than senior cats \u2014 then the two-to-six-month band drops to 6.9 days before climbing again with age. A monotonic summary misses this completely.\n\nThe kitten result most likely reflects policy rather than demand: very young kittens are typically held to reach an adoptable weight, so part of that stay is a rule, not a failure to place them. This data cannot separate the two, and the distinction matters \u2014 a kitten waiting for weight does not need a foster placement for the same reason an adult dog waiting for an adopter does.",
+      "sample": "68,443 cats and 93,347 dogs, levels below 100 animals omitted"
+    },
+    {
+      "id": "month",
+      "label": "FINDING 06",
+      "headline": "Cats have a season and dogs do not",
+      "chart": "stay_by_month.png",
+      "stats": [
+        {
+          "label": "CATS \u2014 median stay, January intake",
+          "value": "5.3 days"
+        },
+        {
+          "label": "CATS \u2014 median stay, May intake",
+          "value": "11.1 days"
+        },
+        {
+          "label": "CATS \u2014 median stay, June intake",
+          "value": "9.7 days"
+        },
+        {
+          "label": "CATS \u2014 June against January",
+          "value": "+4.5 days (1.8x)"
+        },
+        {
+          "label": "CATS \u2014 intake volume, May vs January",
+          "value": "8,834 vs 3,520 animals"
+        },
+        {
+          "label": "DOGS \u2014 median stay range across all 12 months",
+          "value": "5.4\u20136.2 days"
+        },
+        {
+          "label": "CATS \u2014 median stay range across all 12 months",
+          "value": "5.0\u201311.1 days"
+        }
+      ],
+      "caveat": "Kitten season is visible and large. A cat admitted in June waits 1.8 times as long as one admitted in January \u2014 9.7 days against 5.3. The peak is May at 11.1 days, when intake volume is also at its highest: 8,834 cats against 3,520 in January. More animals arriving and each one waiting longer is a compounding problem, not an additive one.\n\nDogs show nothing. Every month sits within a 0.7-day band across the whole year. Whatever drives dog adoption, it is not the calendar.\n\nMonth of intake is a proxy, not a cause. It carries kitten season, school holidays, weather and local events together, and this data cannot separate them. The practical reading is capacity planning rather than explanation: the shelter knows in advance which months will be hard for cats.",
+      "sample": "68,443 cats and 93,347 dogs across 12 months"
+    },
+    {
+      "id": "condition",
+      "label": "FINDING 07",
+      "headline": "Injured animals leave fastest and get stuck most often \u2014 the median and the tail disagree",
+      "chart": "stay_by_condition.png",
+      "stats": [
+        {
+          "label": "Injured \u2014 median stay / 90+ rate",
+          "value": "4.4 days / 6.19%"
+        },
+        {
+          "label": "Normal \u2014 median stay / 90+ rate",
+          "value": "6.2 days / 4.07%"
+        },
+        {
+          "label": "Sick \u2014 median stay / 90+ rate",
+          "value": "1.9 days / 3.15%"
+        },
+        {
+          "label": "Nursing \u2014 median stay / 90+ rate",
+          "value": "3.0 days / 4.79%"
+        },
+        {
+          "label": "Neonatal \u2014 median stay / 90+ rate",
+          "value": "0.8 days / 4.21%"
+        },
+        {
+          "label": "Aged \u2014 median stay / 90+ rate",
+          "value": "2.1 days / 4.82%"
+        },
+        {
+          "label": "Injured animals per year",
+          "value": "913"
+        },
+        {
+          "label": "share of all intakes recorded Normal",
+          "value": "84.8%"
+        }
+      ],
+      "caveat": "This is the breakdown with the most direct operational reading, and it is not the one you would guess. Injured animals have among the SHORTEST median stays (4.4 days, against 6.2 for Normal) and the HIGHEST rate of getting stuck past three months (6.19% against 4.07%). The distribution is bimodal: most injuries resolve and the animal moves on quickly, while a minority turn into long medical holds. A single average of this group describes almost nobody in it.\n\nSick animals show the opposite shape \u2014 the shortest median of the common conditions at 1.9 days and a BELOW-average 90+ rate. Reading that as good news would be a mistake: this data records how long an animal was present, not what happened to them, and outcome type is deliberately excluded from this project. A stay can end quickly for reasons nobody wants.\n\nThe timing audit could not determine what \"Normal\" means. The field may be assessed at the door or updated after a veterinary examination hours later, and the feed carries no edit history to settle it. If conditions are upgraded after examination, some animals counted here as Normal were recorded that way before anyone looked properly. See config.TEMPORAL_LEAKAGE_NOTES.\n\nCategories below 100 animals are omitted; Pregnant, Other and Feral are small enough that their rates move on a handful of cases.",
+      "sample": "171,561 animals; 10 conditions below 100 animals omitted"
+    }
+  ],
+  "breakdowns": {
+    "by_age": {
+      "Cat": {
+        "by": "age_bucket",
+        "where": {
+          "animal_type": "Cat"
+        },
+        "n": 68443,
+        "overall_median_days": 7.204166666666667,
+        "overall_mean_days": 22.35709952922437,
+        "overall_long_stay_rate": 0.04403664363046623,
+        "levels": [
+          {
+            "value": "7y+",
+            "n": 3755,
+            "share": 0.054863170813669766,
+            "median_days": 8.077777777777778,
+            "mean_days": 26.100645796345614,
+            "p90_days": 70.20013888888886,
+            "long_stay_rate": 0.0711051930758988,
+            "long_stay_n": 267,
+            "lift_over_base": 1.6146823920682618
+          },
+          {
+            "value": "3-7y",
+            "n": 5249,
+            "share": 0.07669155355551335,
+            "median_days": 7.973611111111111,
+            "mean_days": 23.218528266848004,
+            "p90_days": 58.80013888888888,
+            "long_stay_rate": 0.05963040579157935,
+            "long_stay_n": 313,
+            "lift_over_base": 1.354108780223313
+          },
+          {
+            "value": "under 2mo",
+            "n": 30168,
+            "share": 0.4407755358473474,
+            "median_days": 11.911458333333334,
+            "mean_days": 27.562341452296156,
+            "p90_days": 71.18090277777777,
+            "long_stay_rate": 0.05184301246353752,
+            "long_stay_n": 1564,
+            "lift_over_base": 1.1772698414206697
+          },
+          {
+            "value": "1-3y",
+            "n": 14207,
+            "share": 0.20757418581885656,
+            "median_days": 5.739583333333333,
+            "mean_days": 17.524570111988353,
+            "p90_days": 48.075,
+            "long_stay_rate": 0.036742450904483706,
+            "long_stay_n": 522,
+            "lift_over_base": 0.8343608385055005
+          },
+          {
+            "value": "6-12mo",
+            "n": 3518,
+            "share": 0.051400435398799,
+            "median_days": 6.014930555555556,
+            "mean_days": 15.58365588744657,
+            "p90_days": 37.87125000000001,
+            "long_stay_rate": 0.028425241614553724,
+            "long_stay_n": 100,
+            "lift_over_base": 0.6454906475862311
+          },
+          {
+            "value": "2-6mo",
+            "n": 11545,
+            "share": 0.16868050786786085,
+            "median_days": 6.913888888888889,
+            "mean_days": 15.158281551256758,
+            "p90_days": 36.92958333333334,
+            "long_stay_rate": 0.02148116067561715,
+            "long_stay_n": 248,
+            "lift_over_base": 0.48780195093605333
+          }
+        ],
+        "levels_dropped_below_min_n": 1,
+        "rows_dropped_below_min_n": 1,
+        "min_n": 100
+      },
+      "Dog": {
+        "by": "age_bucket",
+        "where": {
+          "animal_type": "Dog"
+        },
+        "n": 93347,
+        "overall_median_days": 5.977083333333334,
+        "overall_mean_days": 18.51843693931821,
+        "overall_long_stay_rate": 0.04386857638702904,
+        "levels": [
+          {
+            "value": "3-7y",
+            "n": 17864,
+            "share": 0.19137197767469763,
+            "median_days": 6.082986111111111,
+            "mean_days": 22.129352847025263,
+            "p90_days": 59.39715277777791,
+            "long_stay_rate": 0.06415136587550381,
+            "long_stay_n": 1146,
+            "lift_over_base": 1.462353492156448
+          },
+          {
+            "value": "7y+",
+            "n": 9905,
+            "share": 0.10610946254298478,
+            "median_days": 3.963888888888889,
+            "mean_days": 18.36614139183353,
+            "p90_days": 48.476388888889005,
+            "long_stay_rate": 0.058253407370015144,
+            "long_stay_n": 577,
+            "lift_over_base": 1.3279074036065455
+          },
+          {
+            "value": "1-3y",
+            "n": 34379,
+            "share": 0.36829250002678177,
+            "median_days": 7.020138888888889,
+            "mean_days": 21.02513821825986,
+            "p90_days": 55.197083333333346,
+            "long_stay_rate": 0.053986445213647864,
+            "long_stay_n": 1856,
+            "lift_over_base": 1.2306404643121824
+          },
+          {
+            "value": "6-12mo",
+            "n": 8797,
+            "share": 0.09423977203338083,
+            "median_days": 6.079861111111111,
+            "mean_days": 15.056637395324163,
+            "p90_days": 35.129166666666684,
+            "long_stay_rate": 0.027623053313629648,
+            "long_stay_n": 243,
+            "lift_over_base": 0.6296774499798259
+          },
+          {
+            "value": "under 2mo",
+            "n": 10277,
+            "share": 0.11009459329169657,
+            "median_days": 5.822916666666667,
+            "mean_days": 17.29498730421942,
+            "p90_days": 53.92055555555555,
+            "long_stay_rate": 0.012552301255230125,
+            "long_stay_n": 129,
+            "lift_over_base": 0.2861342283936426
+          },
+          {
+            "value": "2-6mo",
+            "n": 12117,
+            "share": 0.12980599269392695,
+            "median_days": 4.988194444444445,
+            "mean_days": 9.76525282049401,
+            "p90_days": 18.948472222222215,
+            "long_stay_rate": 0.011884129735082941,
+            "long_stay_n": 144,
+            "lift_over_base": 0.2709030179196062
+          }
+        ],
+        "levels_dropped_below_min_n": 1,
+        "rows_dropped_below_min_n": 8,
+        "min_n": 100
+      }
+    },
+    "by_month": {
+      "Cat": {
+        "by": "intake_month",
+        "where": {
+          "animal_type": "Cat"
+        },
+        "n": 68443,
+        "overall_median_days": 7.204166666666667,
+        "overall_mean_days": 22.35709952922437,
+        "overall_long_stay_rate": 0.04403664363046623,
+        "levels": [
+          {
+            "value": "5",
+            "n": 8834,
+            "share": 0.12907090571716612,
+            "median_days": 11.078472222222222,
+            "mean_days": 27.960595331117567,
+            "p90_days": 72.08958333333334,
+            "long_stay_rate": 0.05535431288204664,
+            "long_stay_n": 489,
+            "lift_over_base": 1.257005718840716
+          },
+          {
+            "value": "9",
+            "n": 6523,
+            "share": 0.09530558274768786,
+            "median_days": 7.2965277777777775,
+            "mean_days": 23.59152078507106,
+            "p90_days": 67.07041666666666,
+            "long_stay_rate": 0.05534263375747356,
+            "long_stay_n": 361,
+            "lift_over_base": 1.2567405050639557
+          },
+          {
+            "value": "8",
+            "n": 6655,
+            "share": 0.0972341948774893,
+            "median_days": 7.125694444444444,
+            "mean_days": 22.0238712625567,
+            "p90_days": 62.108055555555566,
+            "long_stay_rate": 0.05469571750563486,
+            "long_stay_n": 364,
+            "lift_over_base": 1.242050097292026
+          },
+          {
+            "value": "4",
+            "n": 5733,
+            "share": 0.08376313136478529,
+            "median_days": 5.1618055555555555,
+            "mean_days": 23.69578412585357,
+            "p90_days": 72.02777777777777,
+            "long_stay_rate": 0.05215419501133787,
+            "long_stay_n": 299,
+            "lift_over_base": 1.1843362870474445
+          },
+          {
+            "value": "2",
+            "n": 3045,
+            "share": 0.04448957526701051,
+            "median_days": 5.247916666666667,
+            "mean_days": 18.277240638113483,
+            "p90_days": 47.58999999999995,
+            "long_stay_rate": 0.04630541871921182,
+            "long_stay_n": 141,
+            "lift_over_base": 1.0515201637023937
+          },
+          {
+            "value": "6",
+            "n": 8130,
+            "share": 0.11878497435822509,
+            "median_days": 9.732291666666665,
+            "mean_days": 24.06744022197166,
+            "p90_days": 62.985555555555564,
+            "long_stay_rate": 0.04329643296432965,
+            "long_stay_n": 352,
+            "lift_over_base": 0.983191028990582
+          },
+          {
+            "value": "7",
+            "n": 6932,
+            "share": 0.10128135821048172,
+            "median_days": 8.172569444444445,
+            "mean_days": 22.25625242100511,
+            "p90_days": 60.10722222222223,
+            "long_stay_rate": 0.04327755337564916,
+            "long_stay_n": 300,
+            "lift_over_base": 0.9827623044756322
+          },
+          {
+            "value": "3",
+            "n": 3800,
+            "share": 0.055520652221556624,
+            "median_days": 5.048611111111111,
+            "mean_days": 19.21707885294834,
+            "p90_days": 60.17576388888883,
+            "long_stay_rate": 0.03894736842105263,
+            "long_stay_n": 148,
+            "lift_over_base": 0.8844309014074669
+          },
+          {
+            "value": "10",
+            "n": 6672,
+            "share": 0.097482576742691,
+            "median_days": 7.942708333333334,
+            "mean_days": 21.797104006031287,
+            "p90_days": 60.82833333333339,
+            "long_stay_rate": 0.03282374100719424,
+            "long_stay_n": 219,
+            "lift_over_base": 0.7453733595737875
+          },
+          {
+            "value": "11",
+            "n": 4838,
+            "share": 0.07068655669681341,
+            "median_days": 9.043055555555556,
+            "mean_days": 21.29316783938496,
+            "p90_days": 54.948541666666664,
+            "long_stay_rate": 0.03245142620917735,
+            "long_stay_n": 157,
+            "lift_over_base": 0.7369187007414483
+          },
+          {
+            "value": "12",
+            "n": 3761,
+            "share": 0.05495083500138802,
+            "median_days": 7.070138888888889,
+            "mean_days": 17.56679488008016,
+            "p90_days": 44.010416666666664,
+            "long_stay_rate": 0.028183993618718425,
+            "long_stay_n": 106,
+            "lift_over_base": 0.6400123010105989
+          },
+          {
+            "value": "1",
+            "n": 3520,
+            "share": 0.051429656794705084,
+            "median_days": 5.270138888888889,
+            "mean_days": 15.265827427925085,
+            "p90_days": 38.034375,
+            "long_stay_rate": 0.02215909090909091,
+            "long_stay_n": 78,
+            "lift_over_base": 0.5031966353984436
+          }
+        ],
+        "levels_dropped_below_min_n": 0,
+        "rows_dropped_below_min_n": 0,
+        "min_n": 100
+      },
+      "Dog": {
+        "by": "intake_month",
+        "where": {
+          "animal_type": "Dog"
+        },
+        "n": 93347,
+        "overall_median_days": 5.977083333333334,
+        "overall_mean_days": 18.51843693931821,
+        "overall_long_stay_rate": 0.04386857638702904,
+        "levels": [
+          {
+            "value": "8",
+            "n": 7316,
+            "share": 0.07837423805799865,
+            "median_days": 6.04375,
+            "mean_days": 18.796023829366888,
+            "p90_days": 45.842708333333334,
+            "long_stay_rate": 0.04866047020229634,
+            "long_stay_n": 356,
+            "lift_over_base": 1.1092329455369367
+          },
+          {
+            "value": "4",
+            "n": 7388,
+            "share": 0.07914555368678158,
+            "median_days": 5.81875,
+            "mean_days": 18.83188097972939,
+            "p90_days": 51.924236111111114,
+            "long_stay_rate": 0.04710341093665403,
+            "long_stay_n": 348,
+            "lift_over_base": 1.0737392187310975
+          },
+          {
+            "value": "9",
+            "n": 7374,
+            "share": 0.07899557564785156,
+            "median_days": 6.040972222222223,
+            "mean_days": 18.761880661470737,
+            "p90_days": 50.13243055555554,
+            "long_stay_rate": 0.046379170056956874,
+            "long_stay_n": 342,
+            "lift_over_base": 1.0572298870101962
+          },
+          {
+            "value": "5",
+            "n": 7891,
+            "share": 0.08453405037119564,
+            "median_days": 5.444444444444445,
+            "mean_days": 18.43936537669497,
+            "p90_days": 48.81180555555556,
+            "long_stay_rate": 0.04587504752249398,
+            "long_stay_n": 362,
+            "lift_over_base": 1.0457382322545168
+          },
+          {
+            "value": "3",
+            "n": 8135,
+            "share": 0.08714795333540445,
+            "median_days": 5.800694444444445,
+            "mean_days": 18.526066651585513,
+            "p90_days": 49.028333333333336,
+            "long_stay_rate": 0.044499078057775046,
+            "long_stay_n": 362,
+            "lift_over_base": 1.0143725126884315
+          },
+          {
+            "value": "10",
+            "n": 8376,
+            "share": 0.08972971814841398,
+            "median_days": 5.9319444444444445,
+            "mean_days": 18.660890150761432,
+            "p90_days": 51.04409722222222,
+            "long_stay_rate": 0.04405444126074499,
+            "long_stay_n": 369,
+            "lift_over_base": 1.00423685674402
+          },
+          {
+            "value": "1",
+            "n": 8264,
+            "share": 0.08852989383697388,
+            "median_days": 5.453819444444445,
+            "mean_days": 18.323819563490463,
+            "p90_days": 46.73361111111111,
+            "long_stay_rate": 0.043804453049370765,
+            "long_stay_n": 362,
+            "lift_over_base": 0.9985382854211509
+          },
+          {
+            "value": "6",
+            "n": 7684,
+            "share": 0.08231651793844473,
+            "median_days": 6.154513888888889,
+            "mean_days": 18.540958195962748,
+            "p90_days": 48.86201388888889,
+            "long_stay_rate": 0.04320666319625195,
+            "long_stay_n": 332,
+            "lift_over_base": 0.9849114503981761
+          },
+          {
+            "value": "2",
+            "n": 7628,
+            "share": 0.08171660578272467,
+            "median_days": 5.882291666666667,
+            "mean_days": 18.091016652221835,
+            "p90_days": 45.004583333333336,
+            "long_stay_rate": 0.042081803880440485,
+            "long_stay_n": 321,
+            "lift_over_base": 0.9592698771251473
+          },
+          {
+            "value": "7",
+            "n": 7539,
+            "share": 0.08076317396381244,
+            "median_days": 6.08125,
+            "mean_days": 18.20037059911915,
+            "p90_days": 46.251805555555556,
+            "long_stay_rate": 0.042048016978379094,
+            "long_stay_n": 317,
+            "lift_over_base": 0.9584996925227726
+          },
+          {
+            "value": "12",
+            "n": 8001,
+            "share": 0.0857124492485029,
+            "median_days": 6.020138888888889,
+            "mean_days": 18.271365679984445,
+            "p90_days": 49.125,
+            "long_stay_rate": 0.04011998500187477,
+            "long_stay_n": 321,
+            "lift_over_base": 0.9145495091501842
+          },
+          {
+            "value": "11",
+            "n": 7751,
+            "share": 0.0830342699818955,
+            "median_days": 6.0784722222222225,
+            "mean_days": 18.814829600840035,
+            "p90_days": 49.07361111111111,
+            "long_stay_rate": 0.03909173009934202,
+            "long_stay_n": 303,
+            "lift_over_base": 0.8911100682743052
+          }
+        ],
+        "levels_dropped_below_min_n": 0,
+        "rows_dropped_below_min_n": 0,
+        "min_n": 100
+      }
+    },
+    "by_condition": {
+      "by": "intake_condition",
+      "where": {},
+      "n": 171561,
+      "overall_median_days": 5.998611111111111,
+      "overall_mean_days": 19.321406997189964,
+      "overall_long_stay_rate": 0.041973408874977414,
+      "levels": [
+        {
+          "value": "Other",
+          "n": 341,
+          "share": 0.001987631221548021,
+          "median_days": 5.288888888888889,
+          "mean_days": 23.47840162376453,
+          "p90_days": 62.37361111111111,
+          "long_stay_rate": 0.06451612903225806,
+          "long_stay_n": 22,
+          "lift_over_base": 1.537071464088769
+        },
+        {
+          "value": "Pregnant",
+          "n": 155,
+          "share": 0.0009034687370672821,
+          "median_days": 6.011111111111111,
+          "mean_days": 25.130293458781363,
+          "p90_days": 79.45986111111111,
+          "long_stay_rate": 0.06451612903225806,
+          "long_stay_n": 10,
+          "lift_over_base": 1.537071464088769
+        },
+        {
+          "value": "Injured",
+          "n": 10579,
+          "share": 0.06166319851248244,
+          "median_days": 4.399305555555555,
+          "mean_days": 21.79441730625488,
+          "p90_days": 65.88861111111117,
+          "long_stay_rate": 0.061915114850174875,
+          "long_stay_n": 655,
+          "lift_over_base": 1.47510332159573
+        },
+        {
+          "value": "Medical",
+          "n": 584,
+          "share": 0.0034040370480470502,
+          "median_days": 7.250694444444445,
+          "mean_days": 23.870664062500005,
+          "p90_days": 58.6338194444445,
+          "long_stay_rate": 0.05821917808219178,
+          "long_stay_n": 34,
+          "lift_over_base": 1.387049078039009
+        },
+        {
+          "value": "Aged",
+          "n": 519,
+          "share": 0.003025163061534964,
+          "median_days": 2.0840277777777776,
+          "mean_days": 15.312174164168988,
+          "p90_days": 33.138611111111075,
+          "long_stay_rate": 0.04816955684007707,
+          "long_stay_n": 25,
+          "lift_over_base": 1.147620794478609
+        },
+        {
+          "value": "Nursing",
+          "n": 3822,
+          "share": 0.02227779040691066,
+          "median_days": 2.9972222222222222,
+          "mean_days": 23.33073931745063,
+          "p90_days": 70.11104166666667,
+          "long_stay_rate": 0.047880690737833596,
+          "long_stay_n": 183,
+          "lift_over_base": 1.1407386729167435
+        },
+        {
+          "value": "Neonatal",
+          "n": 1902,
+          "share": 0.011086435728399811,
+          "median_days": 0.7725694444444444,
+          "mean_days": 19.220988360205634,
+          "p90_days": 68.91083333333333,
+          "long_stay_rate": 0.04206098843322818,
+          "long_stay_n": 80,
+          "lift_over_base": 1.0020865486172836
+        },
+        {
+          "value": "Normal",
+          "n": 145472,
+          "share": 0.8479316394751721,
+          "median_days": 6.155555555555556,
+          "mean_days": 19.296159843443206,
+          "p90_days": 52.94909722222224,
+          "long_stay_rate": 0.0407432358117026,
+          "long_stay_n": 5927,
+          "lift_over_base": 0.970691609372519
+        },
+        {
+          "value": "Sick",
+          "n": 7785,
+          "share": 0.045377445923024465,
+          "median_days": 1.939849537037037,
+          "mean_days": 13.934430674492733,
+          "p90_days": 41.04694444444445,
+          "long_stay_rate": 0.03147077713551702,
+          "long_stay_n": 245,
+          "lift_over_base": 0.7497789190593578
+        },
+        {
+          "value": "Feral",
+          "n": 143,
+          "share": 0.0008335227703265894,
+          "median_days": 7.851388888888889,
+          "mean_days": 15.238115368427868,
+          "p90_days": 35.174027777777766,
+          "long_stay_rate": 0.013986013986013986,
+          "long_stay_n": 2,
+          "lift_over_base": 0.333211296410852
+        }
+      ],
+      "levels_dropped_below_min_n": 10,
+      "rows_dropped_below_min_n": 259,
+      "min_n": 100
+    },
+    "by_black": {
+      "Cat": {
+        "by": "is_black",
+        "where": {
+          "animal_type": "Cat"
+        },
+        "n": 68443,
+        "overall_median_days": 7.204166666666667,
+        "overall_mean_days": 22.35709952922437,
+        "overall_long_stay_rate": 0.04403664363046623,
+        "levels": [
+          {
+            "value": "True",
+            "n": 15197,
+            "share": 0.22203877679236736,
+            "median_days": 8.134722222222223,
+            "mean_days": 24.038748521729435,
+            "p90_days": 65.9575,
+            "long_stay_rate": 0.050996907284332434,
+            "long_stay_n": 775,
+            "lift_over_base": 1.15805617958247
+          },
+          {
+            "value": "False",
+            "n": 53246,
+            "share": 0.7779612232076326,
+            "median_days": 7.115277777777778,
+            "mean_days": 21.877138222476457,
+            "p90_days": 61.157291666666666,
+            "long_stay_rate": 0.042050107050294855,
+            "long_stay_n": 2239,
+            "lift_over_base": 0.9548890102333546
+          }
+        ],
+        "levels_dropped_below_min_n": 0,
+        "rows_dropped_below_min_n": 0,
+        "min_n": 100
+      },
+      "Dog": {
+        "by": "is_black",
+        "where": {
+          "animal_type": "Dog"
+        },
+        "n": 93347,
+        "overall_median_days": 5.977083333333334,
+        "overall_mean_days": 18.51843693931821,
+        "overall_long_stay_rate": 0.04386857638702904,
+        "levels": [
+          {
+            "value": "False",
+            "n": 68957,
+            "share": 0.7387168307497831,
+            "median_days": 5.958333333333333,
+            "mean_days": 18.63214090829685,
+            "p90_days": 48.97486111111112,
+            "long_stay_rate": 0.0448830430558174,
+            "long_stay_n": 3095,
+            "lift_over_base": 1.0231251331212177
+          },
+          {
+            "value": "True",
+            "n": 24390,
+            "share": 0.26128316925021694,
+            "median_days": 6.020833333333333,
+            "mean_days": 18.19696565646212,
+            "p90_days": 47.255347222222234,
+            "long_stay_rate": 0.04100041000410004,
+            "long_stay_n": 1000,
+            "lift_over_base": 0.93461911420091
+          }
+        ],
+        "levels_dropped_below_min_n": 0,
+        "rows_dropped_below_min_n": 0,
+        "min_n": 100
+      }
+    },
+    "black_controlled": {
+      "usable": true,
+      "flag": "is_black",
+      "controls": [
+        "animal_type",
+        "age_bucket",
+        "sex",
+        "intake_type",
+        "intake_condition"
+      ],
+      "raw_rate_flagged": 0.04314781855789119,
+      "raw_rate_unflagged": 0.041597747397736626,
+      "raw_difference_pp": 0.15500711601545633,
+      "controlled_difference_pp": 0.36473979692385056,
+      "ci95_low_pp": 0.13300225594667578,
+      "ci95_high_pp": 0.5964773379010253,
+      "standard_error_pp": 0.11823343927406876,
+      "strata_used": 225,
+      "animals_retained": 165849,
+      "coverage": 0.9667057198314302,
+      "significant": true
+    }
+  }
+}

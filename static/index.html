@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>longstay — shelter length-of-stay prediction</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --ink:#0C0E12; --bg:#F6F7F9; --surface:#FFFFFF; --border:#E4E7EC;
+  --muted:#667085; --subtle:#F2F4F7;
+  --accent:#0F766E; --accent-dk:#0B5D56; --accent-sf:#E6F2F1;
+  --warn:#B45309; --warn-sf:#FEF3E2;
+  --good:#047857; --good-sf:#E7F5F0;
+  --r-sm:6px; --r-md:10px; --r-lg:14px;
+  --shadow-sm:0 1px 2px rgba(12,14,18,.05);
+  --shadow-md:0 4px 12px rgba(12,14,18,.07);
+  --sans:"Plus Jakarta Sans",sans-serif;
+  --mono:"IBM Plex Mono",monospace;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html,body,div,span,section,header,main,nav,button,input,select,label,table,
+thead,tbody,tr,th,td,h1,h2,h3,h4,p,ul,ol,li,dl,dt,dd,a,strong,small{
+  font-family:var(--sans);
+}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.55;font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--sans);font-weight:700;letter-spacing:-.02em;margin:0;}
+.mono,td.mono,.mono *{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+
+.eyebrow{
+  font-family:var(--sans);font-weight:600;font-size:11px;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--muted);margin:0 0 10px;
+}
+
+/* ---------------------------------------------------------- topbar */
+.topbar{
+  height:60px;background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;
+}
+.topbar-in{
+  max-width:1200px;margin:0 auto;padding:0 28px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;}
+.brand-dot{width:6px;height:6px;background:var(--accent);flex:none;border-radius:1px;}
+.brand-name{font-family:var(--sans);font-weight:700;font-size:17px;
+  letter-spacing:-.02em;color:var(--ink);line-height:1.15;}
+.brand-sub{font-family:var(--sans);font-size:11px;color:var(--muted);line-height:1.2;}
+nav.tabs{display:flex;gap:2px;height:60px;}
+.tab{
+  font-family:var(--sans);font-size:14px;font-weight:500;color:var(--muted);
+  background:none;border:0;padding:0 14px;height:60px;cursor:pointer;
+  position:relative;white-space:nowrap;
+}
+.tab:hover{color:var(--ink);}
+.tab[aria-selected="true"]{color:var(--ink);font-weight:600;}
+.tab::after{
+  content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;
+  background:var(--accent);transform:scaleX(0);transform-origin:center;
+}
+.tab[aria-selected="true"]::after{transform:scaleX(1);}
+
+.page{max-width:1200px;margin:0 auto;padding:28px 28px 80px;}
+.panel[hidden]{display:none;}
+
+/* ---------------------------------------------------------- shared */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:24px;
+}
+.grid2{display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;}
+.stack{display:flex;flex-direction:column;gap:16px;}
+
+label.field{display:block;margin:0 0 14px;}
+label.field > span.lbl{
+  display:block;font-family:var(--sans);font-size:12px;font-weight:500;
+  color:var(--muted);margin:0 0 5px;
+}
+input[type=text],input[type=number],select{
+  width:100%;height:40px;border:1px solid var(--border);border-radius:var(--r-md);
+  padding:0 12px;font-family:var(--sans);font-size:14px;color:var(--ink);
+  background:var(--surface);appearance:none;
+}
+select{
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23667085' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
+}
+input:focus-visible,select:focus-visible,button:focus-visible,
+.seg button:focus-visible,a:focus-visible,summary:focus-visible{
+  outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-sf);
+}
+.row2{display:grid;grid-template-columns:1fr 118px;gap:8px;}
+
+.seg{display:flex;background:var(--subtle);border-radius:var(--r-md);padding:3px;gap:3px;}
+.seg button{
+  flex:1;height:34px;border:0;background:none;border-radius:calc(var(--r-md) - 3px);
+  font-family:var(--sans);font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;
+}
+.seg button[aria-pressed="true"]{
+  background:var(--surface);color:var(--accent);font-weight:600;box-shadow:var(--shadow-sm);
+}
+.check{display:flex;align-items:center;gap:8px;margin:0 0 14px;cursor:pointer;
+  font-family:var(--sans);font-size:14px;color:var(--ink);}
+.check input{width:16px;height:16px;accent-color:var(--accent);margin:0;flex:none;}
+
+.btn-main{
+  width:100%;height:44px;border:0;border-radius:var(--r-md);background:var(--accent);
+  color:#fff;font-family:var(--sans);font-size:15px;font-weight:600;cursor:pointer;
+  margin-top:4px;
+}
+.btn-main:hover{background:var(--accent-dk);}
+.linklike{
+  display:inline-block;margin-top:10px;background:none;border:0;padding:0;
+  font-family:var(--sans);font-size:11px;color:var(--muted);
+  cursor:pointer;text-decoration:underline;
+}
+.linklike:hover{color:var(--accent);}
+
+/* ------------------------------------------------------ empty state */
+.empty{
+  background:var(--surface);border:1px dashed var(--border);border-radius:var(--r-lg);
+  height:200px;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:24px;
+  font-family:var(--sans);font-size:14px;color:var(--muted);
+}
+
+/* --------------------------------------------------------- card A */
+.headline-card{padding:28px;position:relative;}
+.band{
+  position:absolute;top:24px;right:24px;border-radius:var(--r-sm);
+  padding:4px 9px;font-family:var(--sans);font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.05em;
+}
+.band.risk{background:var(--warn-sf);color:var(--warn);}
+.band.fast{background:var(--good-sf);color:var(--good);}
+.band.mid{background:var(--subtle);color:var(--muted);}
+.big{
+  font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:56px;
+  font-weight:600;line-height:1;color:var(--ink);letter-spacing:-.03em;
+}
+.big-pct{font-family:var(--mono);font-size:24px;color:var(--muted);margin-left:4px;}
+.big-sub{font-family:var(--sans);font-size:14px;color:var(--muted);margin:10px 0 18px;max-width:44ch;}
+.meter{height:8px;background:var(--subtle);border-radius:var(--r-sm);overflow:hidden;}
+.meter > i{display:block;height:100%;background:var(--accent);border-radius:var(--r-sm);width:0;}
+.meter.risk > i{background:var(--warn);}
+
+/* --------------------------------------------------------- card B */
+.days-card{padding:20px;}
+.days-val{font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:24px;font-weight:500;color:var(--muted);}
+.days-unit{font-family:var(--sans);font-size:13px;color:var(--muted);margin-left:4px;}
+.days-range{font-family:var(--sans);font-size:13px;color:var(--muted);margin:4px 0 12px;}
+.days-range b{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:500;}
+.note{
+  background:var(--subtle);border-radius:var(--r-sm);padding:11px 12px;
+  font-family:var(--sans);font-size:12px;line-height:1.5;color:var(--muted);
+}
+
+/* --------------------------------------------------------- card C */
+.rel-card{border-radius:var(--r-lg);padding:20px;border:1px solid var(--border);}
+.rel-card.ok{background:var(--accent-sf);border-color:var(--accent-sf);color:var(--ink);}
+.rel-card.bad{background:var(--warn-sf);border-color:var(--warn);}
+.rel-card.unknown{background:var(--subtle);}
+.rel-title{font-family:var(--sans);font-size:15px;font-weight:600;margin:0 0 6px;}
+.rel-card.bad .rel-title{color:var(--warn);}
+.rel-body{font-family:var(--sans);font-size:13.5px;line-height:1.55;color:var(--ink);}
+.rel-stats{
+  display:grid;grid-template-columns:1fr auto;gap:3px 16px;margin:12px 0 0;
+  font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--muted);
+}
+.rel-stats dt{font-family:var(--sans);}
+
+/* --------------------------------------------------------- card D */
+.drv{display:flex;flex-direction:column;gap:10px;margin:0 0 12px;}
+.drv-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:baseline;}
+.drv-name{font-family:var(--sans);font-size:14px;color:var(--ink);}
+.drv-name em{font-style:normal;color:var(--muted);}
+.drv-val{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:14px;}
+.drv-val.up{color:var(--warn);} .drv-val.down{color:var(--good);}
+.drv-track{grid-column:1/-1;height:6px;background:var(--subtle);border-radius:var(--r-sm);
+  position:relative;overflow:hidden;}
+.drv-track > i{position:absolute;top:0;height:100%;width:0;border-radius:var(--r-sm);}
+.drv-track > i.up{left:50%;background:var(--warn);}
+.drv-track > i.down{right:50%;background:var(--good);}
+.drv-mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--border);}
+
+/* --------------------------------------------------------- batch */
+.drop{
+  border:1px dashed var(--border);border-radius:var(--r-md);height:120px;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-family:var(--sans);font-size:13px;color:var(--muted);cursor:pointer;padding:16px;
+}
+.drop.over{background:var(--accent-sf);border-style:solid;border-color:var(--accent);color:var(--accent);}
+.tbl-wrap{overflow-x:auto;margin-top:16px;}
+table{width:100%;border-collapse:collapse;min-width:620px;}
+thead th{
+  background:var(--subtle);font-family:var(--sans);font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.07em;color:var(--muted);text-align:left;
+  padding:9px 12px;white-space:nowrap;
+}
+thead th:first-child{border-radius:var(--r-sm) 0 0 var(--r-sm);}
+thead th:last-child{border-radius:0 var(--r-sm) var(--r-sm) 0;}
+tbody tr{border-bottom:1px solid var(--border);}
+tbody tr:hover{background:var(--subtle);}
+tbody td{height:44px;padding:0 12px;font-family:var(--sans);font-size:14px;vertical-align:middle;}
+tbody td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:13px;}
+
+/* --------------------------------------------------------- findings */
+.narrow{max-width:860px;}
+#findings.stack{gap:20px;}
+.finding{padding:28px;}
+.finding h2{font-family:var(--sans);font-weight:700;font-size:22px;
+  letter-spacing:-.02em;line-height:1.3;color:var(--ink);margin:0 0 16px;}
+.finding img{width:100%;height:auto;display:block;border-radius:var(--r-md);
+  border:1px solid var(--border);margin:0 0 18px;}
+
+/* The headline number in plain language, above its chart. Reserved for the
+   finding that carries a callout — if every card had one it would stop
+   meaning anything. */
+.finding .callout{
+  background:var(--accent-sf);border-radius:var(--r-lg);padding:24px;
+  margin:0 0 18px;font-family:var(--sans);font-size:18px;font-weight:600;
+  line-height:1.5;color:var(--ink);
+}
+/* Amber, and only here: the single case where the honest result was to
+   delete something rather than report it. */
+.finding .notice{
+  background:var(--warn-sf);border-radius:var(--r-md);padding:16px 18px;
+  margin:0 0 18px;font-family:var(--sans);font-size:14px;font-weight:500;
+  line-height:1.55;color:var(--ink);
+}
+
+/* Numbers as a definition list: label left in --muted, value right in --ink,
+   monospace and tabular so the column aligns. */
+.defs{display:grid;grid-template-columns:1fr auto;gap:7px 18px;margin:0 0 14px;}
+.defs dt{font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:13px;color:var(--muted);}
+.defs dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:13px;color:var(--ink);text-align:right;}
+.finding .sample{font-family:var(--sans);font-size:12px;color:var(--muted);
+  margin:0 0 16px;}
+
+.finding.broken{border-color:var(--warn);background:var(--warn-sf);}
+.broken-body{font-family:var(--sans);font-size:13.5px;color:var(--ink);margin:0;}
+.broken-body code{font-family:var(--mono);font-size:12.5px;}
+/* pre-line so paragraph breaks written in metrics.json survive into the page
+   without the finding text having to carry HTML. */
+.caveat-box{background:var(--subtle);border-radius:var(--r-md);padding:14px 16px;
+  font-family:var(--sans);font-size:13px;line-height:1.55;color:var(--muted);
+  white-space:pre-line;}
+
+/* --------------------------------------------------------- model */
+.metrics4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.metric .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:36px;
+  font-weight:600;color:var(--ink);line-height:1.1;letter-spacing:-.02em;}
+.metric .k{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:6px;}
+.claim{background:var(--accent-sf);border-radius:var(--r-lg);padding:24px;
+  font-family:var(--sans);font-size:18px;font-weight:600;line-height:1.5;color:var(--ink);}
+/* 180px, not the 150px in the spec: the longest real feature name is
+   "sterilization_status" (20 chars), which overflows 150px at 13px. Ellipsis
+   plus a title attribute is kept as a backstop for any future longer name. */
+.imp-row{display:grid;grid-template-columns:180px 1fr auto;gap:12px;align-items:center;
+  margin-bottom:7px;}
+.imp-name{font-family:var(--sans);font-size:13px;color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.imp-bar{height:8px;background:var(--subtle);border-radius:var(--r-sm);overflow:hidden;}
+.imp-bar > i{display:block;height:100%;background:var(--accent);border-radius:var(--r-sm);width:0;}
+.imp-val{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--muted);}
+.lim{border-top:1px solid var(--border);padding-top:14px;margin-top:14px;}
+.lim:first-of-type{border-top:0;padding-top:0;margin-top:0;}
+.lim h4{font-family:var(--sans);font-size:14.5px;font-weight:600;margin:0 0 5px;}
+.lim p{font-family:var(--sans);font-size:13.5px;color:var(--muted);margin:0;line-height:1.55;}
+.plot{width:100%;height:auto;display:block;border-radius:var(--r-md);
+  border:1px solid var(--border);margin:14px 0 10px;}
+.howto{font-family:var(--sans);font-size:13px;color:var(--muted);line-height:1.55;margin:0;}
+.win{background:var(--accent-sf);}
+
+@media (prefers-reduced-motion: no-preference){
+  .tab::after{transition:transform .2s ease-out;}
+  .tab,.btn-main,tbody tr,.linklike{transition:color .2s ease-out,background-color .2s ease-out;}
+  .meter > i{transition:width .5s ease-out;}
+  .drv-track > i,.imp-bar > i{transition:width .4s ease-out;}
+  .drop{transition:background-color .2s ease-out,border-color .2s ease-out;}
+  tbody tr{animation:rise .3s ease-out backwards;}
+  @keyframes rise{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+}
+@media (max-width:900px){
+  .grid2{grid-template-columns:1fr;}
+  .left-col{position:static !important;}
+  .metrics4{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:560px){
+  .page{padding:20px 16px 64px;}
+  .topbar-in{padding:0 16px;}
+  .brand-sub{display:none;}
+  .tab{padding:0 9px;font-size:13px;}
+  .big{font-size:44px;}
+  .metrics4{grid-template-columns:1fr;}
+  /* Below 560px the name column stacks above its bar rather than being
+     squeezed — truncating "sterilization_status" to nine characters would
+     make the chart unreadable. */
+  .imp-row{grid-template-columns:1fr auto;gap:4px 12px;margin-bottom:12px;}
+  .imp-name{grid-column:1/-1;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <div>
+        <div class="brand-name">longstay</div>
+        <div class="brand-sub">shelter length-of-stay prediction</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="predict"  aria-selected="true">Predict</button>
+      <button class="tab" role="tab" data-tab="findings" aria-selected="false">Findings</button>
+      <button class="tab" role="tab" data-tab="model"    aria-selected="false">Model</button>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+
+<!-- ===================================================== PREDICT -->
+<section class="panel" id="panel-predict">
+  <div class="grid2">
+
+    <form class="card left-col" id="form" style="position:sticky;top:84px;">
+      <p class="eyebrow">Intake details</p>
+
+      <label class="field"><span class="lbl">Animal type</span>
+        <div class="seg" id="seg-species">
+          <button type="button" data-v="Cat" aria-pressed="true">Cat</button>
+          <button type="button" data-v="Dog" aria-pressed="false">Dog</button>
+        </div>
+      </label>
+
+      <label class="field"><span class="lbl">Age</span>
+        <div class="row2">
+          <input type="number" id="age_n" value="2" min="0" step="1">
+          <select id="age_u">
+            <option value="days">days</option>
+            <option value="weeks">weeks</option>
+            <option value="months">months</option>
+            <option value="years" selected>years</option>
+          </select>
+        </div>
+      </label>
+
+      <label class="field"><span class="lbl">Sex</span>
+        <div class="seg" id="seg-sex">
+          <button type="button" data-v="Male" aria-pressed="true">Male</button>
+          <button type="button" data-v="Female" aria-pressed="false">Female</button>
+        </div>
+      </label>
+      <label class="check"><input type="checkbox" id="fixed"> Already spayed or neutered</label>
+
+      <label class="field"><span class="lbl">Breed</span>
+        <input type="text" id="breed" list="breeds" placeholder="start typing">
+        <datalist id="breeds"></datalist>
+      </label>
+      <label class="check"><input type="checkbox" id="mix" checked> Mixed breed</label>
+
+      <label class="field"><span class="lbl">Primary colour</span>
+        <select id="color"></select>
+      </label>
+
+      <label class="field"><span class="lbl">Intake type</span>
+        <select id="intake_type"></select>
+      </label>
+
+      <label class="field"><span class="lbl">Intake condition</span>
+        <select id="intake_condition"></select>
+      </label>
+
+      <label class="check"><input type="checkbox" id="named"> Arrived with a name</label>
+
+      <label class="field"><span class="lbl">Intake month</span>
+        <select id="month"></select>
+      </label>
+
+      <button class="btn-main" type="submit">Calculate risk</button>
+      <button class="linklike" type="button" id="sample">load a sample intake</button>
+    </form>
+
+    <div id="result">
+      <div class="empty">Enter intake details to see a prediction</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:32px;">
+    <p class="eyebrow">Batch triage</p>
+    <h2 style="font-size:19px;margin:0 0 14px;">Rank a day's intakes</h2>
+    <div class="drop" id="drop">
+      Drop a CSV here, or click to choose a file
+    </div>
+    <input type="file" id="file" accept=".csv" hidden>
+    <button class="linklike" type="button" id="tpl">download a template CSV</button>
+    <div id="batch"></div>
+  </div>
+</section>
+
+<!-- ==================================================== FINDINGS -->
+<section class="panel" id="panel-findings" hidden>
+  <div class="narrow stack" id="findings"></div>
+</section>
+
+<!-- ======================================================= MODEL -->
+<section class="panel" id="panel-model" hidden>
+  <div class="narrow stack" id="model"></div>
+</section>
+
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const el = (t,c,x) => { const n=document.createElement(t); if(c)n.className=c;
+  if(x!==undefined)n.textContent=x; return n; };
+const esc = s => String(s).replace(/[&<>"]/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pct = (v,d=1) => (v*100).toFixed(d) + '%';
+
+const BREEDS = {
+  Dog:["Pit Bull","Labrador Retriever","German Shepherd","Chihuahua Shorthair",
+    "Australian Cattle Dog","Dachshund","Border Collie","Boxer","Miniature Poodle",
+    "Beagle","Rat Terrier","Catahoula","Australian Shepherd","Siberian Husky",
+    "Yorkshire Terrier","Jack Russell Terrier","Great Pyrenees","Rottweiler",
+    "American Bulldog","Shih Tzu","Pointer","Staffordshire","Cairn Terrier",
+    "Anatol Shepherd","Plott Hound","Great Dane","Maltese","Pug","Collie Smooth","Other"],
+  Cat:["Domestic Shorthair","Domestic Medium Hair","Domestic Longhair","Siamese",
+    "Maine Coon","Manx","Snowshoe","American Shorthair","Russian Blue","Himalayan",
+    "Persian","Bengal","Ragdoll","Balinese","Angora","Other"]
+};
+const COLORS = ["Black","White","Brown Tabby","Brown","Blue","Orange Tabby","Tan",
+  "Tortie","Calico","Blue Tabby","Black/White","Tricolor","Chocolate","Cream",
+  "Gray","Red","Sable","Torbie","Yellow","Buff","Other"];
+const INTAKE_TYPES = {"Stray":"Stray","Owner Surrender":"Owner surrender",
+  "Public Assist":"Public assist","Abandoned":"Abandoned",
+  "Euthanasia Request":"Euthanasia request"};
+const CONDITIONS = {"Normal":"Normal","Injured":"Injured","Sick":"Sick",
+  "Nursing":"Nursing","Aged":"Aged","Neonatal":"Neonatal","Other":"Other",
+  "Medical":"Medical","Behavior":"Behaviour"};
+const MONTHS = ["January","February","March","April","May","June","July",
+  "August","September","October","November","December"];
+
+let CARD = null;
+
+/* ------------------------------------------------------------ tabs */
+function show(name, push){
+  document.querySelectorAll('.tab').forEach(t =>
+    t.setAttribute('aria-selected', String(t.dataset.tab === name)));
+  ['predict','findings','model'].forEach(n =>
+    $('#panel-'+n).hidden = (n !== name));
+  if (push) history.pushState({tab:name}, '', '#'+name);
+  if (name === 'findings') renderFindings();
+  if (name === 'model') renderModel();
+}
+document.querySelectorAll('.tab').forEach(t =>
+  t.onclick = () => show(t.dataset.tab, true));
+addEventListener('popstate', e => show((e.state && e.state.tab) || 'predict', false));
+/* popstate does not fire when the hash is edited directly or followed as a
+   link, so a deep link to #model would leave the wrong tab showing. */
+addEventListener('hashchange', () => show((location.hash || '#predict').slice(1), false));
+
+/* ------------------------------------------------------------ form */
+function fillSelect(node, entries){
+  node.innerHTML = '';
+  entries.forEach(([v,l]) => {
+    const o = el('option', null, l); o.value = v; node.appendChild(o);
+  });
+}
+function seg(id){ return $('#'+id).querySelector('[aria-pressed="true"]').dataset.v; }
+document.querySelectorAll('.seg').forEach(s =>
+  s.querySelectorAll('button').forEach(b => b.onclick = () => {
+    s.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    if (s.id === 'seg-species') fillBreeds();
+  }));
+
+function fillBreeds(){
+  const list = BREEDS[seg('seg-species')];
+  $('#breeds').innerHTML = '';
+  list.forEach(b => { const o = el('option'); o.value = b; $('#breeds').appendChild(o); });
+  /* Clear rather than prefill. A datalist filters its suggestions against the
+     text already in the input, so seeding it with list[0] left exactly one
+     reachable suggestion and made the picker look like it held one breed. */
+  if (!list.includes($('#breed').value)) $('#breed').value = '';
+}
+fillSelect($('#color'), COLORS.map(c => [c,c]));
+fillSelect($('#intake_type'), Object.entries(INTAKE_TYPES));
+fillSelect($('#intake_condition'), Object.entries(CONDITIONS));
+fillSelect($('#month'), MONTHS.map((m,i) => [String(i+1), m]));
+$('#month').value = String(new Date().getMonth()+1);
+fillBreeds();
+
+const UNIT_RU = {days:'days', weeks:'weeks', months:'months', years:'years'};
+function buildRecord(){
+  const n = Math.max(0, parseInt($('#age_n').value || '0', 10));
+  const unit = UNIT_RU[$('#age_u').value];
+  const sex = seg('seg-sex');
+  const status = $('#fixed').checked ? (sex === 'Male' ? 'Neutered' : 'Spayed') : 'Intact';
+  const year = new Date().getFullYear();
+  const mm = String($('#month').value).padStart(2,'0');
+  const species = seg('seg-species');
+  /* Blank means "not stated", so fall back to the commonest breed for the
+     species rather than a cat breed on a dog. */
+  let breed = $('#breed').value.trim() || BREEDS[species][0];
+  if ($('#mix').checked) breed += ' Mix';
+  const color = $('#color').value;
+  return {
+    animal_type: species,
+    breed, color,
+    age_upon_intake: n + ' ' + unit,
+    sex_upon_intake: status + ' ' + sex,
+    intake_type: $('#intake_type').value,
+    intake_condition: $('#intake_condition').value,
+    name: $('#named').checked ? 'Named' : null,
+    intake_datetime: year + '-' + mm + '-15T12:00:00'
+  };
+}
+
+$('#sample').onclick = () => {
+  $('#seg-species').querySelectorAll('button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.v === 'Dog')));
+  fillBreeds();
+  $('#breed').value = 'Pit Bull'; $('#mix').checked = true;
+  $('#age_n').value = 3; $('#age_u').value = 'years';
+  $('#seg-sex').querySelectorAll('button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.v === 'Male')));
+  $('#fixed').checked = false; $('#color').value = 'Black';
+  $('#intake_type').value = 'Stray'; $('#intake_condition').value = 'Normal';
+  $('#named').checked = false;
+};
+
+$('#form').onsubmit = async e => {
+  e.preventDefault();
+  const r = await fetch('/api/predict', {method:'POST',
+    headers:{'Content-Type':'application/json'}, body: JSON.stringify(buildRecord())});
+  if (!r.ok){ $('#result').innerHTML =
+    '<div class="empty">Error ' + r.status + '</div>'; return; }
+  renderResult(await r.json());
+};
+
+/* ---------------------------------------------------------- result */
+const BAND_LABEL = {High:'AT RISK', Elevated:'SLOW', Standard:'TYPICAL', Fast:'FAST'};
+/* Amber is reserved for AT RISK and green for FAST. The two middle bands stay
+   neutral, which is what keeps the two colours meaningful. */
+const BAND_CLS = {High:'risk', Elevated:'mid', Standard:'mid', Fast:'fast'};
+
+function renderResult(r){
+  const box = el('div','stack');
+  const bandCls = BAND_CLS[r.risk_band] || 'mid';
+  const isRisk = bandCls === 'risk';
+
+  /* --- A: headline */
+  const a = el('div','card headline-card');
+  a.innerHTML =
+    '<div class="band ' + bandCls + '">' + esc(BAND_LABEL[r.risk_band] || r.risk_band) + '</div>' +
+    '<p class="eyebrow">Long-stay risk</p>' +
+    '<div><span class="big" id="big">0</span><span class="big-pct">%</span></div>' +
+    '<p class="big-sub">probability this animal stays longer than three months</p>' +
+    '<div class="meter' + (isRisk ? ' risk' : '') + '"><i id="meter"></i></div>';
+  box.appendChild(a);
+
+  /* --- B: reference day estimate, deliberately quieter */
+  const d = r.predicted_days;
+  const b = el('div','card days-card');
+  b.innerHTML =
+    '<p class="eyebrow">Estimated stay</p>' +
+    '<div><span class="days-val">' + d.median.toFixed(0) + '</span>' +
+    '<span class="days-unit">days</span></div>' +
+    '<p class="days-range">10–90 range: <b>' + d.p10.toFixed(0) + '</b>–<b>' +
+    d.p90.toFixed(0) + '</b> days</p>' +
+    '<div class="note">' + esc(d.caveat.text) + '</div>';
+  box.appendChild(b);
+
+  /* --- C: per-species reliability, never shrunk */
+  const rel = r.model_reliability;
+  const cls = rel.reliable === true ? 'ok' : rel.reliable === false ? 'bad' : 'unknown';
+  const c = el('div','card rel-card ' + cls);
+  let inner = '<p class="eyebrow">Reliability for this species</p>';
+  if (rel.reliable === false){
+    inner += '<h3 class="rel-title">Low confidence for this species</h3>';
+  } else if (rel.reliable === true){
+    inner += '<h3 class="rel-title">Verified for this species</h3>';
+  } else {
+    inner += '<h3 class="rel-title">Reliability has not been measured ' +
+             'for this species</h3>';
+  }
+  inner += '<div class="rel-body">' + esc(rel.message) + '</div>';
+  if (rel.pr_auc != null){
+    inner += '<dl class="rel-stats">' +
+      '<dt>PR-AUC</dt><dd>' + rel.pr_auc.toFixed(3) + '</dd>' +
+      '<dt>base rate</dt><dd>' + pct(rel.base_rate) + '</dd>' +
+      '<dt>better than chance</dt><dd>' + rel.lift.toFixed(2) + 'x</dd></dl>';
+  }
+  c.innerHTML = inner;
+  box.appendChild(c);
+
+  /* --- D: drivers */
+  const dr = el('div','card');
+  let rows = '<p class="eyebrow">Prediction drivers</p><div class="drv">';
+  const max = Math.max(1, ...r.drivers.map(x => Math.abs(x.effect_percentage_points)));
+  r.drivers.slice(0,6).forEach(x => {
+    const up = x.effect_percentage_points > 0;
+    const w = Math.abs(x.effect_percentage_points) / max * 50;
+    rows += '<div class="drv-row">' +
+      '<div class="drv-name">' + esc(x.feature) + ' <em>' + esc(x.value) + '</em></div>' +
+      '<div class="drv-val ' + (up?'up':'down') + '">' +
+        (up?'+':'') + x.effect_percentage_points.toFixed(1) + ' pp</div>' +
+      '<div class="drv-track"><span class="drv-mid"></span>' +
+        '<i class="' + (up?'up':'down') + '" data-w="' + w + '"></i></div></div>';
+  });
+  if (!r.drivers.length) rows +=
+    '<div class="drv-name">Nothing moved the score appreciably.</div>';
+  rows += '</div><p class="note" style="background:none;padding:0;">' +
+    'Effects are estimated against a typical animal of the same species.</p>';
+  dr.innerHTML = rows;
+  box.appendChild(dr);
+
+  $('#result').innerHTML = '';
+  $('#result').appendChild(box);
+
+  /* animation */
+  const target = r.risk_probability * 100;
+  const big = $('#big'), meter = $('#meter');
+  requestAnimationFrame(() => { meter.style.width = Math.min(100,target) + '%'; });
+  const t0 = performance.now(), dur = 500;
+  (function step(now){
+    const p = Math.min(1, (now - t0) / dur);
+    big.textContent = (target * (1 - Math.pow(1-p,3))).toFixed(1);
+    if (p < 1) requestAnimationFrame(step); else big.textContent = target.toFixed(1);
+  })(t0);
+  dr.querySelectorAll('.drv-track > i').forEach((n,i) =>
+    setTimeout(() => { n.style.width = n.dataset.w + '%'; }, 50*i));
+}
+
+/* ----------------------------------------------------------- batch */
+const CSV_COLS = ['name','animal_type','breed','color','age_upon_intake',
+  'sex_upon_intake','intake_type','intake_condition'];
+$('#tpl').onclick = () => {
+  const rows = [CSV_COLS.join(','),
+    'Rex,Dog,Pit Bull Mix,Black/White,3 years,Intact Male,Stray,Normal',
+    'Mochi,Cat,Domestic Shorthair,Black,5 years,Spayed Female,Owner Surrender,Normal'];
+  const blob = new Blob([rows.join('\n')], {type:'text/csv'});
+  const a = el('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'longstay_template.csv'; a.click(); URL.revokeObjectURL(a.href);
+};
+$('#drop').onclick = () => $('#file').click();
+['dragenter','dragover'].forEach(ev => $('#drop').addEventListener(ev, e => {
+  e.preventDefault(); $('#drop').classList.add('over'); }));
+['dragleave','drop'].forEach(ev => $('#drop').addEventListener(ev, e => {
+  e.preventDefault(); $('#drop').classList.remove('over'); }));
+$('#drop').addEventListener('drop', e => {
+  if (e.dataTransfer.files[0]) readCsv(e.dataTransfer.files[0]); });
+$('#file').onchange = e => { if (e.target.files[0]) readCsv(e.target.files[0]); };
+
+function parseCsv(text){
+  const lines = text.trim().split(/\r?\n/);
+  const head = lines[0].split(',').map(s => s.trim());
+  return lines.slice(1).filter(Boolean).map(line => {
+    const cells = line.split(',');
+    const o = {};
+    head.forEach((h,i) => { const v = (cells[i]||'').trim(); if (v) o[h] = v; });
+    return o;
+  });
+}
+async function readCsv(file){
+  const rows = parseCsv(await file.text());
+  if (!rows.length){ $('#batch').innerHTML =
+    '<p class="note">That file is empty.</p>'; return; }
+  const r = await fetch('/api/predict/batch', {method:'POST',
+    headers:{'Content-Type':'application/json'}, body: JSON.stringify(rows)});
+  if (!r.ok){ $('#batch').innerHTML =
+    '<p class="note">Error ' + r.status + '</p>'; return; }
+  renderBatch(await r.json());
+}
+function renderBatch(list){
+  let h = '<div class="tbl-wrap"><table><thead><tr>' +
+    '<th>Name or ID</th><th>Type</th><th>Age</th><th>Risk</th>' +
+    '<th>Band</th><th>Action</th></tr></thead><tbody>';
+  list.forEach((r,i) => {
+    const inp = r.input || {};
+    const cls = BAND_CLS[r.risk_band] || 'mid';
+    h += '<tr style="animation-delay:' + (i*30) + 'ms">' +
+      '<td>' + esc(inp.name || '—') + '</td>' +
+      '<td>' + esc(inp.animal_type || '—') + '</td>' +
+      '<td class="num">' + esc(inp.age_upon_intake || '—') + '</td>' +
+      '<td class="num">' + pct(r.risk_probability) + '</td>' +
+      '<td><span class="band ' + cls + '" style="position:static;">' +
+        esc(BAND_LABEL[r.risk_band] || r.risk_band) + '</span></td>' +
+      '<td>' + (cls === 'risk' ? 'Foster or promote' : 'Standard queue') +
+      '</td></tr>';
+  });
+  $('#batch').innerHTML = h + '</tbody></table></div>';
+}
+
+/* -------------------------------------------------------- card data */
+async function card(){
+  if (CARD) return CARD;
+  const r = await fetch('/api/model-card');
+  CARD = r.ok ? await r.json() : null;
+  return CARD;
+}
+
+async function renderFindings(){
+  const c = await card();
+  const host = $('#findings');
+  if (!c){ host.innerHTML = '<div class="empty">Run the evaluation to see ' +
+    'the findings.</div>'; return; }
+  if (host.dataset.done) return;
+  host.innerHTML = c.findings.map(renderFinding).join('');
+  host.dataset.done = '1';
+}
+
+/* Every key the card reads is listed here. A finding missing one renders a
+   visible error rather than a card with a silent hole in it — a blank panel
+   on a page whose whole premise is honest reporting is the worst outcome. */
+const FINDING_KEYS = ['id', 'label', 'headline', 'chart', 'stats', 'caveat',
+                      'sample'];
+
+function renderFinding(f){
+  const missing = FINDING_KEYS.filter(k => f[k] === undefined || f[k] === null);
+  if (missing.length || !Array.isArray(f.stats)){
+    return '<article class="card finding broken">' +
+      '<p class="eyebrow">Finding could not be rendered</p>' +
+      '<h2>' + esc(f.label || f.id || 'unknown finding') + '</h2>' +
+      '<p class="broken-body">metrics.json is missing: <b>' +
+      esc(missing.join(', ') || 'a valid stats array') + '</b>. ' +
+      'Re-run <code>python main.py evaluate</code>.</p></article>';
+  }
+
+  const stats = f.stats.map(s =>
+    '<dt>' + esc(s.label) + '</dt><dd>' + esc(s.value) + '</dd>').join('');
+
+  return '<article class="card finding">' +
+    '<p class="eyebrow">' + esc(f.label) + '</p>' +
+    '<h2>' + esc(f.headline) + '</h2>' +
+    /* Two optional banners, both above the chart, both driven by the data
+       rather than by which finding number this happens to be. */
+    (f.callout ? '<p class="callout">' + esc(f.callout) + '</p>' : '') +
+    (f.notice ? '<p class="notice">' + esc(f.notice) + '</p>' : '') +
+    '<img src="/assets/' + esc(f.chart) + '" alt="" ' +
+      'onerror="this.replaceWith(Object.assign(document.createElement(\'p\'),' +
+      '{className:\'broken-body\',textContent:\'Chart missing: ' +
+      esc(f.chart) + '\'}))">' +
+    '<dl class="defs">' + stats + '</dl>' +
+    '<p class="sample">' + esc(f.sample) + '</p>' +
+    '<div class="caveat-box">' + esc(f.caveat) + '</div>' +
+  '</article>';
+}
+
+async function renderModel(){
+  const c = await card();
+  const host = $('#model');
+  if (!c){ host.innerHTML =
+    '<div class="empty">Run the evaluation first.</div>'; return; }
+  if (host.dataset.done) return;
+
+  const t = c.classifier.test, b = c.classifier.baseline,
+        op = c.classifier.at_operating_threshold;
+
+  const metric = (v,k) => '<div class="card metric"><div class="v">' + v +
+    '</div><div class="k">' + k + '</div></div>';
+
+  let h = '<div class="metrics4">' +
+    metric(t.pr_auc.toFixed(3), 'PR-AUC') +
+    metric(t.roc_auc.toFixed(3), 'ROC-AUC') +
+    metric(pct(op.precision,0), 'precision at threshold') +
+    metric(pct(op.recall,0), 'recall at threshold') + '</div>';
+
+  h += '<div class="claim">' + esc(c.classifier.human_summary) + '</div>';
+
+  h += '<div class="card"><p class="eyebrow">Against the baseline</p>' +
+    '<div class="tbl-wrap"><table><thead><tr><th>Metric</th>' +
+    '<th>Classifier</th><th>Baseline</th></tr></thead><tbody>' +
+    '<tr><td>PR-AUC</td><td class="num win">' + t.pr_auc.toFixed(4) +
+      '</td><td class="num">' + b.pr_auc.toFixed(4) + '</td></tr>' +
+    '<tr><td>ROC-AUC</td><td class="num win">' + t.roc_auc.toFixed(4) +
+      '</td><td class="num">' + b.roc_auc.toFixed(4) + '</td></tr>' +
+    '<tr><td>Brier score (lower is better)</td><td class="num win">' +
+      t.brier_score.toFixed(4) +
+      '</td><td class="num">' + b.brier_score.toFixed(4) + '</td></tr>' +
+    '<tr><td>Better than chance</td><td class="num win">' + t.pr_auc_lift.toFixed(2) +
+      'x</td><td class="num">1.00x</td></tr>' +
+    '</tbody></table></div></div>';
+
+  h += '<div class="card"><p class="eyebrow">Probability calibration</p>' +
+    '<img class="plot" src="/assets/reliability.png" alt="">' +
+    '<p class="howto">The horizontal axis is the probability the model stated; ' +
+    'the vertical axis is the share of those animals that really did stay 90+ ' +
+    'days. The closer the points sit to the diagonal, the more the number ' +
+    'means what it says: a stated 10% should come true about one time in ten.</p></div>';
+
+  h += '<div class="card"><p class="eyebrow">Precision and recall</p>' +
+    '<img class="plot" src="/assets/precision_recall.png" alt="">' +
+    '<p class="howto">The curve is the trade: flag more animals and you find ' +
+    'more of the long stays, but a larger share of your flags are wrong. The ' +
+    'marked point is the chosen operating threshold, where a miss is treated ' +
+    'as ' + esc(String(c.classifier.threshold_policy.cost_ratio_miss_to_false_alarm)) +
+    ' times as costly as a false alarm.</p></div>';
+
+  h += '<div class="card"><p class="eyebrow">Feature importance</p>';
+  const imax = Math.max(...c.permutation_importance.map(x => x.mae_increase_days));
+  c.permutation_importance.slice(0,15).forEach(x => {
+    h += '<div class="imp-row"><div class="imp-name" title="' + esc(x.feature) +
+      '">' + esc(x.feature) + '</div>' +
+      '<div class="imp-bar"><i data-w="' + (x.mae_increase_days/imax*100) + '"></i></div>' +
+      '<div class="imp-val">' + x.mae_increase_days.toFixed(3) + '</div></div>';
+  });
+  h += '<p class="howto" style="margin-top:10px;">How much worse the ' +
+    'prediction gets when that column is shuffled. Measured on the held-out ' +
+    'test period, not on the training data.</p></div>';
+
+  h += '<div class="card" style="background:var(--subtle);">' +
+    '<p class="eyebrow">What this model cannot see</p>' +
+    '<p style="font-size:14px;line-height:1.6;margin:0;color:var(--ink);">' +
+    'The model reads only what fits on an intake form. It cannot see the ' +
+    'photographs or how the animal presents in them. It does not know the ' +
+    'animal’s temperament or anything in its behaviour notes. It cannot ' +
+    'weigh medical complexity beyond a single coarse condition label. It has ' +
+    'no idea how much effort staff and volunteers put in, whether an adoption ' +
+    'event ran that month, or whether the kennel sits on the main walkway or ' +
+    'in a far corner. All of these matter enormously to how long an animal ' +
+    'waits, and none of them is in this data.</p></div>';
+
+  h += '<div class="card"><p class="eyebrow">Limitations</p>' +
+    c.model_limitations.map(l =>
+      '<div class="lim"><h4>' + esc(l.title) + '</h4><p>' +
+      esc(l.detail.replace(/\s+/g,' ')) + '</p></div>').join('') + '</div>';
+
+  host.innerHTML = h;
+  host.dataset.done = '1';
+  requestAnimationFrame(() => host.querySelectorAll('.imp-bar > i')
+    .forEach((n,i) => setTimeout(() => { n.style.width = n.dataset.w + '%'; }, 30*i)));
+}
+
+show((location.hash || '#predict').slice(1), false);
+history.replaceState({tab:(location.hash||'#predict').slice(1)}, '', location.hash || '#predict');
+</script>
+</body>
+</html>

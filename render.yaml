@@ -1,0 +1,36 @@
+# Render blueprint. Free tier.
+#
+# The service does no work at boot beyond loading committed artifacts: it
+# never downloads from Socrata and never retrains. Everything it needs is in
+# evals/results/ and is committed to the repo.
+#
+# Cold starts on the free tier take ~30-60s because the instance spins down
+# when idle. GET /api/health reports which artifacts loaded and when the
+# metrics were generated, so a failed cold start is diagnosable without
+# shell access.
+
+services:
+  - type: web
+    name: longstay
+    runtime: python
+    plan: free
+    region: oregon
+
+    buildCommand: pip install -r requirements.txt
+    # Render supplies PORT. Binding to 0.0.0.0 is required; binding to
+    # localhost makes the service unreachable and the deploy will hang on
+    # the port scan.
+    startCommand: uvicorn longstay.api:app --host 0.0.0.0 --port $PORT
+
+    healthCheckPath: /api/health
+
+    envVars:
+      # Pin the interpreter. The artifacts are pickled by scikit-learn and
+      # the pinned wheel set must exist for this version — see README.
+      - key: PYTHON_VERSION
+        value: "3.13.1"
+      # Nothing is written at runtime, so keep bytecode out of the image.
+      - key: PYTHONDONTWRITEBYTECODE
+        value: "1"
+      - key: PYTHONUNBUFFERED
+        value: "1"

@@ -1,0 +1,37 @@
+# Pinned to the versions this project was built and tested against.
+#
+# Direct dependencies are pinned exactly; transitive ones are left to pip to
+# resolve. A full `pip freeze` was deliberately not used: it was produced on
+# Windows and carries platform-specific packages that fail to install on the
+# Linux builder Render uses.
+#
+# Verified with `pip install -r requirements.txt` in a clean virtualenv.
+
+# --- serving -------------------------------------------------------------
+fastapi==0.141.1
+uvicorn==0.52.3
+pydantic==2.13.4
+
+# --- modelling -----------------------------------------------------------
+# scikit-learn must match the version the models were pickled with. joblib
+# artifacts are not guaranteed loadable across minor versions, and a mismatch
+# surfaces at load time, not install time — /api/health reports it.
+scikit-learn==1.9.0
+scipy==1.18.0
+joblib==1.5.3
+pandas==3.0.5
+numpy==2.5.2
+
+# --- pipeline only, not used at request time -----------------------------
+# pyarrow reads the processed parquet (fetch/clean/train/evaluate).
+# matplotlib renders the figures. requests talks to Socrata.
+# None of the three is called while serving, but longstay.clean imports
+# fetch, so requests must be importable. If the free-tier build is slow,
+# matplotlib and pyarrow are the two safe to move to a separate dev file.
+pyarrow==25.0.1
+matplotlib==3.11.1
+requests==2.34.2
+
+# --- tests ---------------------------------------------------------------
+pytest==9.1.1
+httpx==0.28.1
