@@ -20,6 +20,9 @@ Data: [Austin Animal Center](https://data.austintexas.gov), via the City of
 Austin's Socrata open-data portal. Roughly 172,000 completed stays from
 October 2013 onward.
 
+**Full write-up: [DOCUMENTATION.md](DOCUMENTATION.md)** — problem, method,
+results, the leakage audit, findings and limitations.
+
 ---
 
 ## What it actually does
