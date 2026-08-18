@@ -25,6 +25,18 @@ results, the leakage audit, findings and limitations.
 
 ---
 
+## Demo
+
+A walkthrough of the triage tool: a dog scored on the day it arrives, the same
+animal as a cat where the model declines to answer, and the leakage audit
+behind the feature that was deleted.
+
+**[Watch the walkthrough](https://github.com/TatianaK-ai/longstay/blob/main/docs/demo.mp4)** —
+GitHub plays it on the file page. The narration is in
+[docs/VIDEO_SCRIPT.md](docs/VIDEO_SCRIPT.md).
+
+---
+
 ## What it actually does
 
 Two models, and the distinction between them matters more than either:
