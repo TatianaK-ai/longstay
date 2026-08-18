@@ -112,3 +112,14 @@ def test_the_corrective_scroll_is_instant_not_smooth(render_result):
 def test_driver_bars_still_appear_when_motion_is_reduced(render_result):
     """Reduced motion must remove the animation, not the information."""
     assert "still ? 0 : 50*i" in render_result
+
+
+def test_sample_link_scrolls_the_form_into_view(page):
+    """The link sits at the bottom of a tall form, but its most visible effect
+    — the Cat/Dog switch — is at the top. Without a scroll the click reads as
+    doing nothing, which is exactly how it was reported.
+    """
+    start = page.index("$('#sample').onclick")
+    body = page[start: start + 1200]
+    assert "window.scrollTo" in body
+    assert "getBoundingClientRect" in body

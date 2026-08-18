@@ -539,6 +539,12 @@ $('#sample').onclick = () => {
   $('#fixed').checked = false; $('#color').value = 'Black';
   $('#intake_type').value = 'Stray'; $('#intake_condition').value = 'Normal';
   $('#named').checked = false;
+
+  /* The link sits at the bottom of a tall form, but the biggest change it
+     makes — the Cat/Dog switch — is at the top, off-screen. Without this the
+     click looks like it did nothing. */
+  const form = $('#form').getBoundingClientRect();
+  if (form.top < 60) window.scrollTo(0, Math.max(0, scrollY + form.top - 76));
 };
 
 $('#form').onsubmit = async e => {
